@@ -5,19 +5,20 @@
 * https://github.com/JamesLongman/ava-discordbot
 */
 
-let bot
+
 const fs = require('fs')
 const prompt = require('prompt');
 
 // Checks for a config file otherwise creates a template
 
-if (!fs.existsSync('./consig.json')) {
+if (!fs.existsSync('./config.json')) {
     console.log('config file not found, a template will be provided')
     createTemplate()
 } else {
     // actually starts the bot and keeps it running
     console.log('config file found')
     console.log("initializing bot")
+    let bot = require('./bot.js')
     bot.startup()
 }
 
@@ -29,5 +30,5 @@ function createTemplate() {
     stream.write(`{"token":"","botuserid":"","prefix":"/","ownerID":"","gfykey":""}`);
     stream.end();
     console.log('template build please supply it with your credentials')
-});
+    });
 }
