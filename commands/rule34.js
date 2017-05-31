@@ -33,8 +33,8 @@ request(rule, function (error, response, rule34Body) {
     }
     var index = Math.floor(Math.random() * pool.length)
     var img = "http:" + pool[index]
-    console.log("posting: " + img);
-    console.log("picked #"+ index  + " out of "  + pool.length + " results");
+    // console.log("posting: " + img);
+    // console.log("picked #"+ index  + " out of "  + pool.length + " results");
 
     let embed = {
         "color": 0,
