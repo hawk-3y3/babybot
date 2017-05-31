@@ -3,16 +3,25 @@
   "version": "1.0.0",
   "description": "test bot please ignore",
   "main": "main.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hawk-3y3/babybot.git"
+    },
   "dependencies": {
     "discord.js": "^11.1.0",
     "opusscript": "0.0.3",
+    "pidusage": "^1.1.5",
     "request": "^2.81.0",
     "sqlite": "^2.8.0"
   },
+  "author": "hawk-3y3",
+  "bugs": {
+    "url": "https://github.com/hawk-3y3/babybot/issues"
+    },
+  "homepage": "https://github.com/hawk-3y3/babybot#readme",
   "devDependencies": {},
   "scripts": {
     "test": "bot dead?"
   },
-  "author": "",
   "license": "ISC"
 }

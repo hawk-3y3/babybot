@@ -1,4 +1,4 @@
-exports.run = (client, message, args) => {
+exports.run = (client, message, args, cmdlist) => {
     const fs = require('fs');
     const config = require('../config.json');
     let helpText = "``` ";
