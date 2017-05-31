@@ -24,7 +24,6 @@ fs.readdir('./commands/', (err, files) => {
     	let commandFile = require(`./commands/${file}`);
 		cmdList.push(file.split('.')[0])
 		});
-	console.log(cmdList);
 	});
 
 
