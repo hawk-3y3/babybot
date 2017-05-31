@@ -4,7 +4,10 @@
   "description": "test bot please ignore",
   "main": "main.js",
   "dependencies": {
-    "discord.js": "^11.1.0"
+    "discord.js": "^11.1.0",
+    "opusscript": "0.0.3",
+    "request": "^2.81.0",
+    "sqlite": "^2.8.0"
   },
   "devDependencies": {},
   "scripts": {
