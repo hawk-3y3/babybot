@@ -8,3 +8,7 @@ const config = require('../config.json');
     message.channel.send(`To invite me onto a server use this link ${message.member.displayName}:`)
     message.channel.send(`https://discordapp.com/api/oauth2/authorize?client_id=${config.botuserid}` +'&scope=bot&permissions=8')
 }
+
+exports.help = () => {
+    return "\n    Suplies a github link for this bot.\n"
+}

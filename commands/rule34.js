@@ -54,3 +54,7 @@ request(rule, function (error, response, rule34Body) {
 message.channel.send({ embed })
 })
 }
+
+exports.help = () => {
+    return "(tags)\n    searches rule34.xxx for lewd/weeb images, only runs in NSFW channels\n    Adding (tags) will search for that tag, sepperate multiple tags with a space.\n"
+}

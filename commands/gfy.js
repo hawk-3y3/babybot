@@ -48,3 +48,7 @@ let embed = {
 message.channel.send({ embed });
 });
 }
+
+exports.help = () => {
+    return "(tags)\n    searches gfy for gifs\n    Adding (tags) will search for that tag, sepperate multiple tags with a space.\n"
+}

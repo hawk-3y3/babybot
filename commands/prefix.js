@@ -10,3 +10,7 @@ exports.run = (client, message, args) => {
         // Sending a message to confirm the new prefix
         message.channel.send("The new prefix is " + newPrefix + " !");
 }
+
+exports.help = () => {
+	return "(new prefix)\n    sets a new prefix for commands\n"
+}

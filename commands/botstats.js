@@ -84,3 +84,7 @@ Promise.all([system()])
             });
     
 }
+
+exports.help = () => {
+    return "\n    replies with some stats about the bot\n"
+}
