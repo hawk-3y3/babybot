@@ -12,8 +12,7 @@
     "opusscript": "0.0.3",
     "pidusage": "^1.1.5",
     "prompt": "^1.0.0",
-    "request": "^2.81.0",
-    "sqlite": "^2.8.0"
+    "request": "^2.81.0"
   },
   "author": "hawk-3y3",
   "bugs": {
