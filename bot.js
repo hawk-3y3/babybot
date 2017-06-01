@@ -157,7 +157,7 @@ function setStartClock() {
 }
 
 
-
+/*
 // This loop reads the /events/ folder and attaches each event file to the appropriate event.
 fs.readdir('./events/', (err, files) => {
 	if (err) return console.error(err);
@@ -168,7 +168,7 @@ fs.readdir('./events/', (err, files) => {
     	client.on(eventName, (...args) => eventFunction.run(client, ...args));
 		});
 	});
-
+*/
 
 
 // This loop reads the /commands/ folder and makes an entry for each command used for command validation.
