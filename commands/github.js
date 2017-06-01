@@ -11,3 +11,7 @@ exports.run = (client, message, args) => {
                 console.log(`Failed to send the github link message, ${err}`);
             });
     }
+
+exports.help = () => {
+    return "\n    Suplies a github link for this bot.\n"
+}
