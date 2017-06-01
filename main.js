@@ -1,55 +1,34 @@
-const Discord = require('discord.js');
-const client = new Discord.Client();
-const config = require('./config.json');
-const responseObject = require("./responses.json");
-const fs = require('fs');
-
-let cmdList = [];
-
-// This loop reads the /events/ folder and attaches each event file to the appropriate event.
-fs.readdir('./events/', (err, files) => {
-	if (err) return console.error(err);
-	files.forEach(file => {
-    	let eventFunction = require(`./events/${file}`);
-    	let eventName = file.split('.')[0];
-    	// super-secret recipe to call events with all their proper arguments *after* the `client` var.
-    	client.on(eventName, (...args) => eventFunction.run(client, ...args));
-		});
-	});
-
-// This loop reads the /commands/ folder and makes an entry for each command.
-fs.readdir('./commands/', (err, files) => {
-	if (err) return console.error(err);
-	files.forEach(file => {
-    	let commandFile = require(`./commands/${file}`);
-		cmdList.push(file.split('.')[0])
-		});
-	});
+/*
+* This is a discord bot build by copying and converting ava-discordbot then tailoring it for my personal use
+*
+* You can find the source this is based on at:
+* https://github.com/JamesLongman/ava-discordbot
+*/
 
 
+const fs = require('fs')
+const prompt = require('prompt');
 
-client.on('message', message => {
-	if (message.author.bot) return;
-        if(responseObject[message.content]) {            
-            message.channel.send(responseObject[message.content]);
-		}
-		if (!message.content.startsWith(config.prefix)) return;
+// Checks for a config file otherwise creates a template
 
-		let command = message.content.split(' ')[0];
-		command = command.slice(config.prefix.length);
-		let args = message.content.split(' ').slice(1);
-		// looks if the command is valid and executes it.
-		try {
-			if (cmdList.includes(command)){
-				let commandFile = require(`./commands/${command}.js`);
-				message.react("\u2611");
-				commandFile.run(client, message, args, cmdList);
-			} else {
-				message.channel.send(`${command} is not a valid command!`)
-			}
-		} catch (err) {
-    		console.error(err);
-		}
-	});
+if (!fs.existsSync('./config.json')) {
+    console.log('config file not found, a template will be provided')
+    createTemplate()
+} else {
+    // actually starts the bot and keeps it running
+    console.log('config file found')
+    console.log("initializing bot")
+    let bot = require('./bot.js')
+    bot.startup()
+}
 
-client.login(config.token);
+// creates a template to load your credentials from
+
+function createTemplate() {
+    let stream = fs.createWriteStream("config.json");
+    stream.once('open', function(fd) {
+    stream.write(`{"token":"","botuserid":"","prefix":"/","ownerID":"","gfykey":""}`);
+    stream.end();
+    console.log('template build please supply it with your credentials')
+    });
+}
