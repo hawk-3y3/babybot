@@ -27,7 +27,7 @@ if (!fs.existsSync('./config.json')) {
 function createTemplate() {
     let stream = fs.createWriteStream("config.json");
     stream.once('open', function(fd) {
-    stream.write(`{"token":"","botuserid":"","prefix":"/","ownerID":"","gfykey":""}`);
+    stream.write(`{"token":"",\n"botuserid":"",\n"prefix":"/",\n"ownerID":"",\n"gfykey":"",\n "yt-apikey":"",\n "botId":""}`);
     stream.end();
     console.log('template build please supply it with your credentials')
     });

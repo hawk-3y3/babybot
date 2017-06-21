@@ -1,19 +1,18 @@
-exports.run = (client, message, args, cmdlist) => {
+exports.run = (client, message, args) => {
     const fs = require('fs');
-    const config = require('../config.json');
-    const prefix = config.prefix
+    const prefix = client.config.prefix
     let helpText = "``` ";
     
     if (args[0] == null){
         helpText += ` ---- commands ---- \n\n`
-    cmdlist.forEach(function(element) {
+    client.cmdList.forEach(function(element) {
         helpText += ` ${prefix}${element} \n`
     }, this);
-    helpText += ` For more info try ${prefix}help "command" !`
+    helpText += `\n For more info try ${prefix}help "command" !`
     } else if(true){
         helpText += ` ---- help ---- \n\n`
         args.forEach(function(element) {
-            if (!cmdlist.includes(element)) {
+            if (!client.cmdList.includes(element)) {
                 helpText += `${prefix}${element} is not a valid command \n\n`
             } else {
                 let commandFile = require(`./${element}.js`);
