@@ -1,5 +1,4 @@
 const discord = require('discord.js');
-const config = require('./config.json');
 const responseObject = require("./responses.json");
 const fs = require('fs');
 
@@ -12,9 +11,11 @@ let loggingIn = false;
 let startClock = false;
 // Upon disconnect if client doesn't reconnect in time we will take over
 let restartClock = null;
-// List of commands used for input validation
-let cmdList = [];
 
+// Variables for the music bot part
+var currentVoice;
+var playlist = [];
+var stopped = false;
 
 module.exports = {
     startup() {
@@ -22,12 +23,16 @@ module.exports = {
 loggingIn = true;
 setStartClock();
 
-if (client) { client.destroy(); }
+if (client) { client.bot.destroy(); }
 
-client = new discord.Client();
+client = {
+    bot: new discord.Client(),
+    config: require('./config.json'),
+    cmdList:[]
+    }
 
 // Attempt to log the client in
-client.login(config.token)
+client.bot.login(client.config.token)
     .then(() => {
         // Successfull log in so clear timers
         clearStartClock();
@@ -42,39 +47,51 @@ client.login(config.token)
     });
 
 // Emitted when the bot client is ready (event emmited on succesful login and reconnections)
-client.on('ready', () => {
+client.bot.on('ready', () => {
 // Successfull log in or reconnection so clear timers
 clearStartClock();
 clearRestartClock(true);
 });
 
 // On reconnect attempts
-client.on('reconnecting', () => {
+client.bot.on('reconnecting', () => {
 clearRestartClock(false);
 console.log('reconnect attempt event');
 });
 
 // Emitted for general warnings
-client.on('warn', (warning) => {
+client.bot.on('warn', (warning) => {
     console.log('warning:'+ warning);
 });
 
-client.on('message', message => {
+client.bot.on('message', message => {
 	if (message.author.bot) return;
     if(responseObject[message.content]) {            
         message.channel.send(responseObject[message.content]);
 	}
-	if (!message.content.startsWith(config.prefix)) return;
+	if (!message.content.startsWith(client.config.prefix) && !message.content.startsWith(`<@${client.bot.user.id}>`)) return;
 
-	let command = message.content.split(' ')[0];
-	command = command.slice(config.prefix.length);
-	let args = message.content.split(' ').slice(1);
+    let command;
+    let args;
+
+    if (message.content.startsWith(client.config.prefix)){
+	    command = message.content.split(' ')[0];
+	    command = command.slice(client.config.prefix.length);
+	    args = message.content.split(' ').slice(1);
+    } else if (message.content.startsWith(`<@${client.bot.user.id}>`)){
+        command = message.content.split(' ')[1];
+	    args = message.content.split(' ').slice(2);
+        if(command === undefined) {
+            message.channel.send(`for help with the commands try ${client.config.prefix}help.`)
+            return
+        }
+    }
 	// looks if the command is valid and executes it.
 	try {
-		if (cmdList.includes(command)){
+		if (client.cmdList.includes(command)){
 			let commandFile = require(`./commands/${command}.js`);
 			message.react("\u2611");
-			commandFile.run(client, message, args, cmdList);
+			commandFile.run(client, message, args);
 		} else {
 			message.channel.send(`${command} is not a valid command!`)
 		}
@@ -116,15 +133,15 @@ function restart() {
         return;
     }
     loggingIn = true;
-    if (client.uptime === null) {
+    if (client.bot.uptime === null) {
         console.log('info: Client connection failed, attempting to reconnect');
-        if (client !== null) {
-            client = null;
+        if (client.bot !== null) {
+            client.bot = null;
         }
         module.exports.startup();
     } else {
         console.log('warn: Client connection handling failed, destroying client, re-attempting connection...');
-        client.destroy()
+        client.bot.destroy()
             .then(() => {
                 module.exports.startup();
             })
@@ -157,26 +174,13 @@ function setStartClock() {
 }
 
 
-/*
-// This loop reads the /events/ folder and attaches each event file to the appropriate event.
-fs.readdir('./events/', (err, files) => {
-	if (err) return console.error(err);
-	files.forEach(file => {
-    	let eventFunction = require(`./events/${file}`);
-    	let eventName = file.split('.')[0];
-    	// super-secret recipe to call events with all their proper arguments *after* the `client` var.
-    	client.on(eventName, (...args) => eventFunction.run(client, ...args));
-		});
-	});
-*/
-
-
 // This loop reads the /commands/ folder and makes an entry for each command used for command validation.
 fs.readdir('./commands/', (err, files) => {
 	if (err) return console.error(err);
 	files.forEach(file => {
     	let commandFile = require(`./commands/${file}`);
-		cmdList.push(file.split('.')[0])
+		client.cmdList.push(file.split('.')[0])
+        delete require.cache[require.resolve(`./commands/${file}`)];
 		});
 	});
 

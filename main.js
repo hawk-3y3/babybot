@@ -8,6 +8,7 @@
 
 const fs = require('fs')
 const prompt = require('prompt');
+const package = require('./package.json')
 
 // Checks for a config file otherwise creates a template
 
@@ -17,7 +18,7 @@ if (!fs.existsSync('./config.json')) {
 } else {
     // actually starts the bot and keeps it running
     console.log('config file found')
-    console.log("initializing bot")
+    console.log(`initializing bot, version: ${package.version}`)
     let bot = require('./bot.js')
     bot.startup()
 }
@@ -27,7 +28,7 @@ if (!fs.existsSync('./config.json')) {
 function createTemplate() {
     let stream = fs.createWriteStream("config.json");
     stream.once('open', function(fd) {
-    stream.write(`{"token":"","botuserid":"","prefix":"/","ownerID":"","gfykey":""}`);
+    stream.write(`{"token":"",\n"botuserid":"",\n"prefix":"/",\n"ownerID":"",\n"gfykey":"",\n "yt-apikey":"",\n "botId":""}`);
     stream.end();
     console.log('template build please supply it with your credentials')
     });

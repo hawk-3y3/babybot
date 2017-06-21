@@ -2,13 +2,12 @@ exports.run = (client, message, args) => {
 const discord = require('discord.js');
 const packageFile = require('../package.json');
 const pusage = require('pidusage');
-const bot = client;
 const start = Date.now();
 
 let uptime = "";
 
 let x;
-let ms = bot.uptime;
+let ms = client.bot.uptime;
 
 switch (true) {
     case ms >= 3600000*24:
@@ -49,15 +48,15 @@ function system() {
 Promise.all([system()])
     .then((result) => {
         const embed = new discord.RichEmbed()
-            .setAuthor('Bot Statistics', bot.user.avatarURL)
+            .setAuthor('Bot Statistics', client.bot.user.avatarURL)
             .setColor('#0275ea')
 
             .addField('\u200b', '\u200b', true)
             .addField('\u200b', '__General Bot Stats__', true)
             .addField('\u200b', '\u200b', true)
-            .addField('Servers', `${bot.guilds.size} guilds`, true)
-            .addField('Channels', bot.channels.size, true)
-            .addField('Users', bot.users.size, true)
+            .addField('Servers', `${client.bot.guilds.size} guilds`, true)
+            .addField('Channels', client.bot.channels.size, true)
+            .addField('Users', client.bot.users.size, true)
 
             .addField('\u200b', '\u200b', true)
             .addField('\u200b', '__Process Details__', true)
@@ -69,7 +68,7 @@ Promise.all([system()])
             .addField('\u200b', '\u200b', true)
             .addField('\u200b', '__Technical Specs__', true)
             .addField('\u200b', '\u200b', true)
-            .addField(client.user.username + ' Version', `${packageFile.version}`, true)
+            .addField(client.bot.user.username + ' Version', `${packageFile.version}`, true)
             .addField('Node Version', `${process.version}`, true)
             .addField('discord.js Version', `${packageFile.dependencies['discord.js']}`, true)
 
