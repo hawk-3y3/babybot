@@ -8,6 +8,7 @@
 
 const fs = require('fs')
 const prompt = require('prompt');
+const package = require('./package.json')
 
 // Checks for a config file otherwise creates a template
 
@@ -17,7 +18,7 @@ if (!fs.existsSync('./config.json')) {
 } else {
     // actually starts the bot and keeps it running
     console.log('config file found')
-    console.log("initializing bot")
+    console.log(`initializing bot, version: ${package.version}`)
     let bot = require('./bot.js')
     bot.startup()
 }
