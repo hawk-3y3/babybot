@@ -1,7 +1,7 @@
-exports.run = (client, message, args) => {
+exports.run = async (client, message, args) => {
     const channel = message.member.voiceChannel;
 
-    if (channel === undefined){message.channel.send("you're not in a voicechannel on this server")}
+    if (channel == null){message.channel.send("you're not in a voicechannel on this server")}
     else {
         if (!channel.joinable) {
             if (channel.full) {
@@ -12,8 +12,7 @@ exports.run = (client, message, args) => {
                 return
             }
         }
-        channel.join()
-        // .then(connection => console.log(`Connected! to ${channel}`))
+        await channel.join()
         .catch(console.error);
 
         message.channel.send("test :>");
