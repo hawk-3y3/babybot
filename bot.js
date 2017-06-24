@@ -89,9 +89,10 @@ client.bot.on('message', message => {
 	// looks if the command is valid and executes it.
 	try {
 		if (client.cmdList.includes(command)){
-			let commandFile = require(`./commands/${command}.js`);
+			let commandFile = require(`./commands/${command}.js`)
 			message.react("\u2611");
 			commandFile.run(client, message, args);
+            delete require.cache[require.resolve(`./commands/${command}.js`)]
 		} else {
 			message.channel.send(`${command} is not a valid command!`)
 		}
