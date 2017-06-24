@@ -1,34 +1,29 @@
-exports.run = (client, message, args) => {
-    let result = "You rolled ";
-    let input = (args[0] == null) ? ['1d6'] : args;
-    let dice
-    let i
-    
-    for (var index = 0; index < input.length; index++) {
-        var element = input[index];   
-        i = 0
-        dice = /(\d+)[d,D](\d+)/g.exec(element)
+exports.run = function (client, msg, args) {
 
-        if (dice == null) {
-            dice = /[d,D](\d+)/g.exec(element)
-            dice.splice(1, 0, 1);
+    let rx = /((?:\d*)d(?:\d+))/gi;
+    let rx2 = /^(?:(\d*)d(\d+))/i
+    let r = rx.test(args.join(' ')) ? args.join(' ').match(rx) : ['d20'];
+    let result = new Array();
+    let sum;
+
+    r.forEach(d => {
+        let data = d.match(rx2);
+        let rolls = (/\d+/).test(data[1]) ? data[1] : 1;
+
+        for (i = 0;i < rolls;i++){
+            let res = Math.ceil(Math.random() * data[2]);
+            result.push(res);
         }
 
-        if(dice[1] == 1){
-            result += "a "
-        }
-        while (i < dice[1]) {
-            i++
-            result += Math.ceil(Math.random() * dice[2])
-            if (i !== dice[1]){
-                result += ", "
-            }
-        }
-    }
-    
-    message.channel.send(result).catch(console.error);
+    });
+    sum = result.reduce((a, b) => a + b, 0);
+    msg.channel.send({ embed: {
+        color: 4492543,
+        title: "Dice Roll",
+        description: `Your rolls: ${result.join(', ')}.\nTotal sum: ${sum}.`
+    }})
+
 }
-
 exports.help = () => {
-    return "(number of dice)d(size of die)\n    rolls dice for you\n    Adding nDn will roll that many dice.\n"
+    return "(number of dice)d(size of die)\n    rolls a d6 for you\n    Adding nDn will roll that many dice of that type.\n"
 }
