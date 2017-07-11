@@ -1,6 +1,6 @@
 {
   "name": "babybot",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "test bot please ignore",
   "main": "main.js",
   "repository": {
@@ -12,6 +12,7 @@
     "opusscript": "0.0.3",
     "pidusage": "^1.1.5",
     "request": "^2.81.0",
+    "snekfetch": "^3.2.3",
     "ytdl-core": "^0.14.2"
   },
   "author": "hawk-3y3",

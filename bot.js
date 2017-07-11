@@ -1,6 +1,7 @@
 const discord = require('discord.js');
 const responseObject = require("./responses.json");
 const fs = require('fs');
+const sf = require("snekfetch");
 
 let client = null;
 /* Global variables for connection control (discord.js has its own client reconnection handling but
@@ -12,10 +13,6 @@ let startClock = false;
 // Upon disconnect if client doesn't reconnect in time we will take over
 let restartClock = null;
 
-// Variables for the music bot part
-var currentVoice;
-var playlist = [];
-var stopped = false;
 
 module.exports = {
     startup() {
@@ -26,9 +23,25 @@ setStartClock();
 if (client) { client.bot.destroy(); }
 
 client = {
-    bot: new discord.Client(),
+    bot: new discord.Client({
+        disableEvents: {
+		    "GUILD_BAN_ADD"  : true,
+		    "GUILD_BAN_REMOVE" : true,
+		    "MESSAGE_DELETE" : true,
+		    "MESSAGE_DELETE_BULK" : true,
+		    "MESSAGE_UPDATE" : true,
+		    "PRESENCE_UPDATE" : true,
+		    "TYPING_START" : true,
+		    "USER_UPDATE" : true
+	    },
+        messageCacheMaxSize: 20,
+        disableEveryone: true
+    }),
     config: require('./config.json'),
-    cmdList:[]
+    cmdList:[],
+    queues: {},
+    prefixes: require("./data/prefixes.json"),
+    volume: require("./data/volume.json")
     }
 
 // Attempt to log the client in
@@ -48,9 +61,14 @@ client.bot.login(client.config.token)
 
 // Emitted when the bot client is ready (event emmited on succesful login and reconnections)
 client.bot.on('ready', () => {
-// Successfull log in or reconnection so clear timers
-clearStartClock();
-clearRestartClock(true);
+    // Successfull log in or reconnection so clear timers
+    clearStartClock();
+    clearRestartClock(true);
+    client.bot.guilds.forEach(g => {
+		if (!client.prefixes[g.id]) client.prefixes[g.id] = client.config.prefix;
+		if (!client.queues[g.id]) client.queues[g.id] = { id: g.id, messagec: "", dj: "", queue: [], svotes: [], repeat: "None" };
+        if (!client.volume[g.id]) client.volume[g.id] = { id: g.id, volume:"0.05"}
+    });
 });
 
 // On reconnect attempts
@@ -64,19 +82,24 @@ client.bot.on('warn', (warning) => {
     console.log('warning:'+ warning);
 });
 
+client.bot.on("guildDelete", g => {
+	delete client.prefixes[g.id];
+	delete client.queues[g.id];
+});
+
 client.bot.on('message', message => {
 	if (message.author.bot) return;
     if(responseObject[message.content]) {            
         message.channel.send(responseObject[message.content]);
 	}
-	if (!message.content.startsWith(client.config.prefix) && !message.content.startsWith(`<@${client.bot.user.id}>`)) return;
+	if (!message.content.startsWith(client.prefixes[message.guild.id]) && !message.content.startsWith(`<@${client.bot.user.id}>`)) return;
 
     let command;
     let args;
 
-    if (message.content.startsWith(client.config.prefix)){
+    if (message.content.startsWith(client.prefixes[message.guild.id])){
 	    command = message.content.split(' ')[0];
-	    command = command.slice(client.config.prefix.length);
+	    command = command.slice(client.prefixes[message.guild.id].length);
 	    args = message.content.split(' ').slice(1);
     } else if (message.content.startsWith(`<@${client.bot.user.id}>`)){
         command = message.content.split(' ')[1];
@@ -125,6 +148,9 @@ function clearStartClock() {
         startClock = null;
     }
 }
+
+
+
 
 /* To be called to either restart the client in the case of failed reconnection handling, or to periodically
 make sure that the client is attempting to log in */

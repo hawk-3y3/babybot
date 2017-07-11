@@ -6,8 +6,7 @@
 */
 
 
-const fs = require('fs')
-const prompt = require('prompt');
+const fs = require('fs');
 const package = require('./package.json')
 
 // Checks for a config file otherwise creates a template
