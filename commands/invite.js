@@ -6,7 +6,7 @@ const config = require('../config.json');
 
     // Respond with invite link
     message.channel.send(`To invite me onto a server use this link ${message.member.displayName}:`)
-    message.channel.send(`https://discordapp.com/api/oauth2/authorize?client_id=${config.botuserid}` +'&scope=bot&permissions=8')
+    message.channel.send(`https://discordapp.com/api/oauth2/authorize?client_id=${config.id.botuserid}` +'&scope=bot&permissions=8')
 }
 
 exports.help = () => {

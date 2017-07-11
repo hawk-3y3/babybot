@@ -45,7 +45,7 @@ client = {
     }
 
 // Attempt to log the client in
-client.bot.login(client.config.token)
+client.bot.login(client.config.keys.token)
     .then(() => {
         // Successfull log in so clear timers
         clearStartClock();
@@ -65,7 +65,7 @@ client.bot.on('ready', () => {
     clearStartClock();
     clearRestartClock(true);
     client.bot.guilds.forEach(g => {
-		if (!client.prefixes[g.id]) client.prefixes[g.id] = client.config.prefix;
+		if (!client.prefixes[g.id]) client.prefixes[g.id] = client.config.options.prefix;
 		if (!client.queues[g.id]) client.queues[g.id] = { id: g.id, messagec: "", dj: "", queue: [], svotes: [], repeat: "None" };
         if (!client.volume[g.id]) client.volume[g.id] = { id: g.id, volume:"0.05"}
     });
@@ -83,9 +83,9 @@ client.bot.on('warn', (warning) => {
 });
 
 client.bot.on("guildCreate", g => {
-	g.defaultChannel.send(`Waddup! This is **${client.bot.user.username}**, thank you for inviting me. You can view my commands with '${client.config.prefix}help'. Please report any issues on the github page (${client.config.prefix}github)`);
+	g.defaultChannel.send(`Waddup! This is **${client.bot.user.username}**, thank you for inviting me. You can view my commands with '${client.config.options.prefix}help'. Please report any issues on the github page (${client.config.options.prefix}github)`);
 
-	client.prefixes[g.id] = client.config.prefix;
+	client.prefixes[g.id] = client.config.options.prefix;
 	client.queues[g.id] = { id: g.id, msgc: "", queue: [], svotes: [], repeat: "None" };
 });
 
@@ -98,6 +98,7 @@ client.bot.on('message', message => {
 	if (message.author.bot) return;
     if(responseObject[message.content]) {            
         message.channel.send(responseObject[message.content]);
+        return
 	}
 	if (!message.content.startsWith(client.prefixes[message.guild.id]) && !message.content.startsWith(`<@${client.bot.user.id}>`)) return;
 
@@ -112,25 +113,23 @@ client.bot.on('message', message => {
         command = message.content.split(' ')[1];
 	    args = message.content.split(' ').slice(2);
         if(command === undefined) {
-            message.channel.send(`for help with the commands try ${client.config.prefix}help.`)
+            message.channel.send(`for help with the commands try ${client.config.options.prefix}help.`)
             return
         }
     }
 	// looks if the command is valid and executes it.
 	try {
-		if (client.cmdList.includes(command)){
-			let commandFile = require(`./commands/${command}.js`)
-			message.react("\u2611");
-			commandFile.run(client, message, args);
-            delete require.cache[require.resolve(`./commands/${command}.js`)]
-		} else {
-			message.channel.send(`${command} is not a valid command!`)
-		}
-	} catch (err) {
-    	console.error(err);
-	}
-});
-},};
+		let commandFile = require(`./commands/${command}.js`)
+		message.react("\u2611");
+		commandFile.run(client, message, args);
+        delete require.cache[require.resolve(`./commands/${command}.js`)]
+		} catch (err) {
+        message.channel.send(`${command} is not a valid command!`)
+    	// console.error(err);
+	    }
+    });
+}, 
+};
 
 // Clear the restart clock, success arguement to indicate if we need to also restart the clock
 function clearRestartClock(success) {
@@ -208,15 +207,7 @@ function setStartClock() {
 }
 
 
-// This loop reads the /commands/ folder and makes an entry for each command used for command validation.
-fs.readdir('./commands/', (err, files) => {
-	if (err) return console.error(err);
-	files.forEach(file => {
-    	let commandFile = require(`./commands/${file}`);
-		client.cmdList.push(file.split('.')[0])
-        delete require.cache[require.resolve(`./commands/${file}`)];
-		});
-	});
+
 
 
 

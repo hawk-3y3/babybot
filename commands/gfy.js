@@ -2,7 +2,7 @@ exports.run = (client, message, args) => {
 const request = require('request')
 const config = require('../config.json') 
 
-let u = 'http://api.giphy.com/v1/gifs/random?api_key='+ config.gfykey + '&tag='
+let u = 'http://api.giphy.com/v1/gifs/random?api_key='+ config.keys.gfykey + '&tag='
 let tags = ""
 //let r = u + "?api_key=" + config.gfykey + '&tag='
 

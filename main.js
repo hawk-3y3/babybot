@@ -1,8 +1,11 @@
 /*
 * This is a discord bot build by copying and converting ava-discordbot then tailoring it for my personal use
 *
+* Music functionality temporarly stoelen from Pod.fm
+*
 * You can find the source this is based on at:
 * https://github.com/JamesLongman/ava-discordbot
+* https://github.com/Monskiller/podfm
 */
 
 

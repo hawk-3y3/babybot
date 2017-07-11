@@ -18,7 +18,7 @@ exports.run = function (client, msg, args) {
     });
     sum = result.reduce((a, b) => a + b, 0);
     msg.channel.send({ embed: {
-        color: 4492543,
+        color: client.config.options.embedColour,
         title: "Dice Roll",
         description: `Your rolls: ${result.join(', ')}.\nTotal sum: ${sum}.`
     }})
