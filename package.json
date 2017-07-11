@@ -1,6 +1,10 @@
 {
   "name": "babybot",
+<<<<<<< HEAD
   "version": "1.0.3",
+=======
+  "version": "1.0.2",
+>>>>>>> 3995057d62f98ae37da532704d790c839485b7f2
   "description": "test bot please ignore",
   "main": "main.js",
   "repository": {
