@@ -6,6 +6,7 @@ if(!args[0]){
         title: `current prefix`,
         description: `the prefix is currently: "${client.prefixes[message.guild.id]}".`
     }})
+    return
 }
 
 
