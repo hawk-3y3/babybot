@@ -1,23 +1,12 @@
-exports.run = (client, message, args) => {
-    const fs = require('fs');
-    const config = require('../config.json');
-    // Gets the prefix from the command (eg. "!prefix +" it will take the "+" from it)
-    let input = message.content.split(' ').slice(1, 2)[0];
+fsutil = require('../utilities/fsutil.js')
 
-    if(input === undefined|| input === null){
-        message.channel.send(`the current prefix is "${config.prefix}"`)
-        return
-    }
+exports.run = async (client, message, args) => {
+client.prefixes[message.guild.id] = args[0];
+	await fsutil.fsWriteFile(__dirname + '/../data/prefixes.json', JSON.stringify(client.prefixes, null, 4))
 
-    // change the configuration in memory
-    config.prefix = input;
-    // Now we have to save the file.
-    fs.writeFile('config.json', JSON.stringify(config, null, 4), (err) => {if (err) console.error('Fail' + err)});
-    // Sending a message to confirm the new prefix
-    message.channel.send("The new prefix is " + input + " !");
+    message.channel.send({embed:{
+        title: `Prefix changed`,
+        description: `The new prefix for this server will be "${args[0]}" `
+        }
+    })
 }
-
-exports.help = () => {
-	return "(new prefix)\n    sets a new prefix for commands\n"
-}
-
