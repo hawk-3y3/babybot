@@ -4,7 +4,7 @@
 exports.run = (client, message, args) => {
     const pkg = require('../package.json')
         // Respond with github link
-        message.channel.send(client.user.username + '\'s code is 100% open-source, github repository: ' + pkg.homepage
+        message.channel.send(client.bot.user.username + '\'s code is 100% open-source, github repository: ' + pkg.homepage
             )
             .then(console.log("github link requested by " + message.member.displayName))
             .catch((err) => {
