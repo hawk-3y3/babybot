@@ -34,6 +34,7 @@ request(u, function (error, response, gfyBody) {
 let embed = {
   "color": 0,
   "timestamp": new Date(),
+  "url":data.data.image_url,
   "footer": {
     "text": "tags: " + tags
   },

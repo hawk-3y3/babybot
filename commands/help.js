@@ -1,6 +1,6 @@
 exports.run = (client, message, args) => {
     const fs = require('fs');
-    const prefix = client.config.prefix
+    const prefix = client.prefixes[message.guild.id]
     let helpText = "``` ";
     
     if (args[0] == null){
