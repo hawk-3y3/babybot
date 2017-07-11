@@ -83,9 +83,9 @@ client.bot.on('warn', (warning) => {
 });
 
 client.bot.on("guildCreate", g => {
-	g.defaultChannel.send(`Waddup! This is **${client.bot.user.username}**, thank you for inviting me. You can view my commands with '${config.prefix}help'. Please report any issues on the github page (${config.prefix}github)`);
+	g.defaultChannel.send(`Waddup! This is **${client.bot.user.username}**, thank you for inviting me. You can view my commands with '${client.config.prefix}help'. Please report any issues on the github page (${client.config.prefix}github)`);
 
-	client.prefixes[g.id] = config.prefix;
+	client.prefixes[g.id] = client.config.prefix;
 	client.queues[g.id] = { id: g.id, msgc: "", queue: [], svotes: [], repeat: "None" };
 });
 
