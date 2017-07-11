@@ -82,6 +82,13 @@ client.bot.on('warn', (warning) => {
     console.log('warning:'+ warning);
 });
 
+client.on("guildCreate", g => {
+	g.defaultChannel.send(`Waddup! This is **${client.bot.user.username}**, thank you for inviting me. You can view my commands with '${config.prefix}help'. Please report any issues on the github page (${config.prefix}github)`);
+
+	client.prefixes[g.id] = config.prefix;
+	client.queues[g.id] = { id: g.id, msgc: "", queue: [], svotes: [], repeat: "None" };
+});
+
 client.bot.on("guildDelete", g => {
 	delete client.prefixes[g.id];
 	delete client.queues[g.id];
