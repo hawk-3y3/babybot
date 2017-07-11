@@ -91,5 +91,3 @@ config.json
 .vscode
 concepts
 data_dump
-prefixes.json
-volume.json
