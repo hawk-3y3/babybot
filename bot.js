@@ -82,7 +82,7 @@ client.bot.on('warn', (warning) => {
     console.log('warning:'+ warning);
 });
 
-client.on("guildCreate", g => {
+client.bot.on("guildCreate", g => {
 	g.defaultChannel.send(`Waddup! This is **${client.bot.user.username}**, thank you for inviting me. You can view my commands with '${config.prefix}help'. Please report any issues on the github page (${config.prefix}github)`);
 
 	client.prefixes[g.id] = config.prefix;
