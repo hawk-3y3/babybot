@@ -25,6 +25,10 @@ exports.run = (client, message, args) => {
     message.channel.send(result).catch(console.error);
 }
 
-exports.help = () => {
-    return "(number of coins)\n    flips coins for you\n    Adding (number) will flip that many coins.\n"
-}
+exports.usage = {
+	main: "{prefix}{command}",
+	args: "[number of coins]",
+	description: "Flips Coins for you",
+	adminOnly: false,
+	DJ: false
+};

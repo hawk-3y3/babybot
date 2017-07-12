@@ -1,4 +1,4 @@
-const owners = config.users.owners;
+const owners = require("../config.json").users.owners;
 
 module.exports = {
 
@@ -17,8 +17,8 @@ module.exports = {
 	},
 
 	isBlocked(member) {
-		let hdb = require(`../src/config.json`).users.blocked;
-		delete require.cache[require.resolve(`../src/config.json`)];
+		let hdb = require(`../config.json`).users.blocked;
+		delete require.cache[require.resolve(`../config.json`)];
 
 		return ((module.exports.hasRole(member, "NoMusicPerms") || hdb.includes(member.id)) && !owners.includes(member.id) && member.guild.ownerID !== member.id);
 	}

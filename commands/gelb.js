@@ -51,6 +51,10 @@
         })
     }
 
-exports.help = () => {
-    return "(tags)\n    searches gelbooru for lewd/weeb images, only runs in NSFW channels\n    Adding (tags) will search for that tag, sepperate multiple tags with a space.\n"
-}
+exports.usage = {
+	main: "{prefix}{command}",
+	args: "[search tags]",
+	description: "Searches gelbooru for images",
+	adminOnly: false,
+	DJ: false
+};

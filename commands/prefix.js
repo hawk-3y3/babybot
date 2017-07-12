@@ -20,3 +20,11 @@ client.prefixes[message.guild.id] = args[0];
         }
     })
 }
+
+exports.usage = {
+	main: "{prefix}{command}",
+	args: "<new prefix>",
+	description: "sets a new prefix for this server",
+	adminOnly: true,
+	DJ: false
+};

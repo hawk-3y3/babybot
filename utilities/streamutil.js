@@ -1,14 +1,14 @@
-const ytutil = require("../util/youtubeHandler.js");
+const ytutil = require("./ytutil.js");
 const ytdl   = require("ytdl-core");
 const buffer = require("buffered2").BufferedStream;
 
 exports.play = async function play(guild, client) {
 
-	if (!client.guilds.has(guild.id) ||	!client.voiceConnections.has(guild.id) || !client.voiceConnections.get(guild.id).channel.id || client.voiceConnections.get(guild.id).dispatcher) return;
+	if (!client.bot.guilds.has(guild.id) ||	!client.bot.voiceConnections.has(guild.id) || !client.bot.voiceConnections.get(guild.id).channel.id || client.bot.voiceConnections.get(guild.id).dispatcher) return;
 
 	if (guild.queue.length === 0) {
-		if (client.voiceConnections.get(guild.id) && client.voiceConnections.get(guild.id).channel.id) client.voiceConnections.get(guild.id).disconnect(); 
-		return client.channels.get(guild.msgc).send({ embed: {
+		if (client.bot.voiceConnections.get(guild.id) && client.bot.voiceConnections.get(guild.id).channel.id) client.bot.voiceConnections.get(guild.id).disconnect(); 
+		return client.bot.channels.get(guild.messageChannel).send({ embed: {
 			color: client.config.options.embedColour,
 			title: "Playback finished",
 			description: `Use ${client.prefixes[guild.id]}play or ${client.prefixes[guild.id]}p to queue some music`,
@@ -23,7 +23,7 @@ exports.play = async function play(guild, client) {
 		let res = await ytutil.getFormats(guild.queue[0].id);
 		if (!res.url) {
 			guild.queue.shift();
-			client.channels.get(guild.msgc).send({ embed: {
+			client.bot.channels.get(guild.messageChannel).send({ embed: {
 				color: client.config.options.embedColour,
 				title: "This song is unplayable"
 			}});
@@ -36,31 +36,31 @@ exports.play = async function play(guild, client) {
 		song = guild.queue[0].id
 	}
 
-	client.channels.get(guild.msgc).send({embed: {
+	client.bot.channels.get(guild.messageChannel).send({embed: {
 		color: client.config.options.embedColour,
 		title: "Now Playing",
 		description: `${guild.queue[0].title} [Link](https://youtu.be/${guild.queue[0].id})`, //(https://youtu.be/${guild.queue[0].id})`
 		footer: {
-			text: `Requested by ${client.users.get(guild.queue[0].req) ? `${client.users.get(guild.queue[0].req).username}#${client.users.get(guild.queue[0].req).discriminator}` : "Unknown"}`
+			text: `Requested by ${client.bot.users.get(guild.queue[0].req) ? `${client.bot.users.get(guild.queue[0].req).username}#${client.bot.users.get(guild.queue[0].req).discriminator}` : "Unknown"}`
 		}
 	}});
 
-	client.voiceConnections.get(guild.id).playStream(song);
+	client.bot.voiceConnections.get(guild.id).playStream(song);
 	setTimeout( function() {
-		if (client.voiceConnections.get(guild.id).dispatcher && client.volume[guild.id]) client.voiceConnections.get(guild.id).dispatcher.setVolume(client.volume[guild.id]);
+		if (client.bot.voiceConnections.get(guild.id).dispatcher && client.volume[guild.id]) client.bot.voiceConnections.get(guild.id).dispatcher.setVolume(client.volume[guild.id]);
 	}, 500);
 
-	if (!client.voiceConnections.get(guild.id).dispatcher) return client.voiceConnections.get(guild.id).disconnect();
+	if (!client.bot.voiceConnections.get(guild.id).dispatcher) return client.bot.voiceConnections.get(guild.id).disconnect();
 	
-	client.voiceConnections.get(guild.id).dispatcher.on("end", () => {
+	client.bot.voiceConnections.get(guild.id).dispatcher.on("end", () => {
 		if (guild.repeat === "All") guild.queue.push(guild.queue[0]);
 		if (guild.repeat !== "Current") guild.queue.shift();
 		guild.svotes = [];
 		exports.play(guild, client);
 	});
 
-	client.voiceConnections.get(guild.id).on("disconnect", () => {
-		client.voiceConnections.forEach(vc => {
+	client.bot.voiceConnections.get(guild.id).on("disconnect", () => {
+		client.bot.voiceConnections.forEach(vc => {
 			if (vc.dispatcher) {
 				if (!vc.dispatcher.paused) {
 					setTimeout( function() {

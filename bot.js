@@ -2,6 +2,8 @@ const discord = require('discord.js');
 const responseObject = require("./responses.json");
 const fs = require('fs');
 const sf = require("snekfetch");
+permissions = require("./utilities/permutil.js")
+
 
 let client = null;
 /* Global variables for connection control (discord.js has its own client reconnection handling but
@@ -38,7 +40,6 @@ client = {
         disableEveryone: true
     }),
     config: require('./config.json'),
-    cmdList:[],
     queues: {},
     prefixes: require("./data/prefixes.json"),
     volume: require("./data/volume.json")
@@ -86,7 +87,7 @@ client.bot.on("guildCreate", g => {
 	g.defaultChannel.send(`Waddup! This is **${client.bot.user.username}**, thank you for inviting me. You can view my commands with '${client.config.options.prefix}help'. Please report any issues on the github page (${client.config.options.prefix}github)`);
 
 	client.prefixes[g.id] = client.config.options.prefix;
-	client.queues[g.id] = { id: g.id, msgc: "", queue: [], svotes: [], repeat: "None" };
+	client.queues[g.id] = { id: g.id, messageChannel: "", queue: [], svotes: [], repeat: "None" };
 });
 
 client.bot.on("guildDelete", g => {
@@ -117,6 +118,11 @@ client.bot.on('message', message => {
             return
         }
     }
+
+    delete require.cache[require.resolve("./data/aliasses.json")];
+	let aliases = require("./data/aliasses.json");
+    if (aliases[command]) command = aliases[command];
+
 	// looks if the command is valid and executes it.
 	try {
 		let commandFile = require(`./commands/${command}.js`)
@@ -125,7 +131,7 @@ client.bot.on('message', message => {
         delete require.cache[require.resolve(`./commands/${command}.js`)]
 		} catch (err) {
         message.channel.send(`${command} is not a valid command!`)
-    	// console.error(err);
+    	console.error(err);
 	    }
     });
 }, 
@@ -205,11 +211,3 @@ function setStartClock() {
         startClock = setInterval(restart, 3000);
     }
 }
-
-
-
-
-
-
-
-

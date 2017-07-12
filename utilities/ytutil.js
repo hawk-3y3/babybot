@@ -1,7 +1,7 @@
 const sf  = require("snekfetch");
 const yt  = require("ytdl-core");
 const fs  = require('fs')
-const ytk = require(".config.json").keys.ytapikey;
+const ytk = require("../config.json").keys.ytapikey;
 
 module.exports = {
 

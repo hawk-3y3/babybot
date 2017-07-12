@@ -40,6 +40,10 @@ function editPong(message, secondMessage) {
             console.warn(`Failed to edit pong message, ${err}`);
         });
 }
-exports.help = () => {
-    return "\n    returns the ping from the bot to the discord server.\n"
-}
+exports.usage = {
+	main: "{prefix}{command}",
+	args: "",
+	description: "returns ping from the bot to the server",
+	adminOnly: false,
+	DJ: false
+};

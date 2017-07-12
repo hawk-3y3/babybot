@@ -84,6 +84,10 @@ Promise.all([system()])
     
 }
 
-exports.help = () => {
-    return "\n    replies with some stats about the bot\n"
-}
+exports.usage = {
+	main: "{prefix}{command}",
+	args: "[command]",
+	description: "Replies with some stats about the bot",
+	adminOnly: false,
+	DJ: false
+};
