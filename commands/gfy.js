@@ -2,7 +2,7 @@ exports.run = (client, message, args) => {
 const request = require('request')
 const config = require('../config.json') 
 
-let u = 'http://api.giphy.com/v1/gifs/random?api_key='+ config.gfykey + '&tag='
+let u = 'http://api.giphy.com/v1/gifs/random?api_key='+ config.keys.gfykey + '&tag='
 let tags = ""
 //let r = u + "?api_key=" + config.gfykey + '&tag='
 
@@ -50,6 +50,10 @@ message.channel.send({ embed });
 });
 }
 
-exports.help = () => {
-    return "(tags)\n    searches gfy for gifs\n    Adding (tags) will search for that tag, sepperate multiple tags with a space.\n"
-}
+exports.usage = {
+	main: "{prefix}{command}",
+	args: "[searcg tags]",
+	description: "searches gifs on GFY",
+	adminOnly: false,
+	DJ: false
+};

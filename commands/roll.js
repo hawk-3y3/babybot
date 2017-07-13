@@ -1,4 +1,4 @@
-exports.run = function (client, msg, args) {
+exports.run = function (client, message, args) {
 
     let rx = /((?:\d*)d(?:\d+))/gi;
     let rx2 = /^(?:(\d*)d(\d+))/i
@@ -17,13 +17,17 @@ exports.run = function (client, msg, args) {
 
     });
     sum = result.reduce((a, b) => a + b, 0);
-    msg.channel.send({ embed: {
-        color: 4492543,
+    message.channel.send({ embed: {
+        color: client.config.options.embedColour,
         title: "Dice Roll",
         description: `Your rolls: ${result.join(', ')}.\nTotal sum: ${sum}.`
     }})
 
 }
-exports.help = () => {
-    return "(number of dice)d(size of die)\n    rolls a d6 for you\n    Adding nDn will roll that many dice of that type.\n"
-}
+exports.usage = {
+	main: "{prefix}{command}",
+	args: "<nDn> ex. 1d20",
+	description: "rolls polyhedral dice",
+	adminOnly: false,
+	DJ: false
+};

@@ -5,6 +5,10 @@ exports.run = (client, message, args) => {
 	message.reply(`The command ${args[0]} has been reloaded`);
 };
 
-exports.help = () => {
-    return "(command)\n    reloads the command to apply changes\n"
-}
+exports.usage = {
+	main: "{prefix}{command}",
+	args: "",
+	description: "reloads a command",
+	adminOnly: true,
+	DJ: false
+};

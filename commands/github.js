@@ -12,6 +12,10 @@ exports.run = (client, message, args) => {
             });
     }
 
-exports.help = () => {
-    return "\n    Suplies a github link for this bot.\n"
-}
+exports.usage = {
+	main: "{prefix}{command}",
+	args: "",
+	description: "suplys a github link for the bot",
+	adminOnly: false,
+	DJ: false
+};
