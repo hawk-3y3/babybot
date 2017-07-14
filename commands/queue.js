@@ -1,4 +1,4 @@
-const timeParser = require("../utilities/timeParser.js");
+const timeParser = require("../utilities/timeparser.js");
 
 
 exports.run = function (client, message, args) {
