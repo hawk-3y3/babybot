@@ -1,0 +1,21 @@
+{
+    "keys":{
+        "token": "",
+        "gfykey": "",
+        "ytapikey": ""
+    },
+    "id":{
+        "botuserid": "",
+        "ownerID": "",
+        "botId": ""
+    },
+    "options":{
+        "prefix": "/",
+        "embedColour":"4492543",
+        "maxQueue":"30"
+    },
+    "users":{
+        "owners":"",
+        "blocked":""
+    }
+}
