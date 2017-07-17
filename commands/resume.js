@@ -3,7 +3,7 @@ exports.run = function (client, msg, args) {
 	if(permissions.isBlocked(msg.member)) return msg.channel.send({ embed: {
 		color: config.options.embedColour,
 		title: "Denied",
-		description: `Your permissions to use ${client.user.username} on this server are revoked.`
+		description: `Your permissions to use ${client.bot.user.username} on this server are revoked.`
 	}});
 
 	if (!client.voiceConnections.get(msg.guild.id) || client.queues[msg.guild.id].queue.length === 0) return msg.channel.send({ embed: {

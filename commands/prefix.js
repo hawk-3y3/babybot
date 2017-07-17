@@ -1,6 +1,14 @@
 fsutil = require('../utilities/fsutil.js')
 
 exports.run = async (client, message, args) => {
+
+if(permissions.isBlocked(message.member)) return message.channel.send({ embed: {
+	color: client.config.options.embedColour,
+	title: "Denied",
+	description: `Your permissions to use ${client.bot.user.username} on this server are revoked.`
+}});
+
+
 if(!args[0]){
     message.channel.send({embed:{
         title: `current prefix`,
