@@ -19,7 +19,7 @@ exports.run = function (client, message, args) {
 		url         : track.src !== "soundcloud" ? `https://youtu.be/${track.id}` : undefined,
 		description : `${timeParser.formatSeconds(client.bot.voiceConnections.get(message.guild.id).dispatcher.time / 1000)}${track.src === "youtube" ? "/" + timeParser.formatSeconds(track.duration) : ""}\n${x.join('')}`,
 		footer: {
-			text: `Requested by ${client.users.get(track.req) ? `${client.users.get(guild.queue[0].req).username}#${client.users.get(guild.queue[0].req).discriminator}` : "Unknown"}`
+			text: `Requested by ${client.bot.users.get(track.req) ? `${client.bot.users.get(guild.queue[0].req).username}#${client.bot.users.get(guild.queue[0].req).discriminator}` : "Unknown"}`
 		}
 	};
 
