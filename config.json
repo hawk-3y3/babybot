@@ -13,10 +13,10 @@
         "prefix": "/",
         "embedColour":"4492543",
         "maxQueue":"30",
+          "maxQueue":"30",
         "maxPlaylist":"15"
     },
     "users":{
         "owners":"",
-        "blocked":""
+        "blocked":[]
     }
-}
