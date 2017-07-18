@@ -3,7 +3,7 @@ const fsutil = require('../utilities/fsutil.js')
 
 exports.run = async (message, args) => {
     if ( !(permissions.isDJ(message.member, client) || permissions.isAdmin(message.member)) ) return message.channel.send({ embed: {
-		color: config.options.embedColour,
+		color: client.config.options.embedColour,
 		title: "Access Denied",
 		description: "You need the DJ role to use this command."
     }});
@@ -11,7 +11,7 @@ exports.run = async (message, args) => {
     if(!args[0]){
         message.channel.send({embed:{
         title: `current volume`,
-        color: config.options.embedColour,
+        color: client.config.options.embedColour,
         description: `the current volume is ${client.volume[message.guild.id]*100}% `
         }})
         return    

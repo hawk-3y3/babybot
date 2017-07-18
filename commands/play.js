@@ -86,6 +86,10 @@ exports.run = async function (message, args, options) {
 
 
 	let res = {};
+	
+	options = options ? options.join(): null
+	index = options == null ? null : options.match(/--([1-9])/)[1]
+	console.log(index)
 
 	if (!ytrxm || !ytrxm[1]) {
 
@@ -146,42 +150,44 @@ exports.run = async function (message, args, options) {
 		if (res.type === "playlist") embed.footer = {text: `...and ${res.items.slice(1).length} songs.`};
 
 		message.channel.send({ embed: embed });
+		
 
 	} else {
-
 		let src = await message.channel.send({ embed: {
-			color: client.config.options.embedColour,
-			title: "Select Song",
-			description: res.items.map((v, i) => `**${i + 1}.** ${v.snippet.title}`).join("\n"),
-			footer: {
-				text: "1 to 9 || c to cancel selection"
-			}
-		}});
-
-		const collector = await message.channel.awaitMessages(m => m.author.id === message.author.id && message.guild && ((parseInt(m.content) && m.content >= 1 && m.content <= res.items.length) || m.content.toLowerCase().startsWith(client.prefixes[message.guild.id] + "p") || m.content === "c"), {
-			maxMatches: 1,
-			time: 20000,
-			error: ["time"]
-		}).catch(e =>{
-			src.edit({ embed: {
 				color: client.config.options.embedColour,
-				title: `Too slow`,
-				description: `You took more than 10 seconds to select`,
-			}})
+				title: "Select Song",
+				description: res.items.map((v, i) => `**${i + 1}.** ${v.snippet.title}`).join("\n"),
+				footer: {
+					text: "1 to 9 || c to cancel selection"
+				}
+			}});
+
+		if(index == null) {
 			
-		})
 
-		if (collector == undefined) return;
+			const collector = await message.channel.awaitMessages(m => m.author.id === message.author.id && message.guild && ((parseInt(m.content) && m.content >= 1 && m.content <= res.items.length) || m.content.toLowerCase().startsWith(client.prefixes[message.guild.id] + "p") || m.content === "c"), {
+				maxMatches: 1,
+				time: 20000,
+				error: ["time"]
+			}).catch(e =>{
+				src.edit({ embed: {
+					color: client.config.options.embedColour,
+					title: `Too slow`,
+					description: `You took more than 10 seconds to select`,
+				}})
+			})
 
-		if(collector.first()){
-			if (collector.first().content.toLowerCase().startsWith(client.prefixes[message.guild.id] + "p") || collector.first().content === "c") {
-				if ((collector.first().content === "c") && client.bot.voiceConnections.get(message.guild.id).channel.id && guild.queue.length === 0) client.bot.voiceConnections.get(message.guild.id).disconnect();
-				return src.delete();
+			if (collector == undefined) return;
+
+			if(collector.first()){
+				if (collector.first().content.toLowerCase().startsWith(client.prefixes[message.guild.id] + "p") || collector.first().content === "c") {
+					if ((collector.first().content === "c") && client.bot.voiceConnections.get(message.guild.id).channel.id && guild.queue.length === 0) client.bot.voiceConnections.get(message.guild.id).disconnect();
+					return src.delete();
+				}
 			}
+			index = collector.first() ? collector.first().content - 1 : 0;
 		}
 
-		let index = collector.first() ? collector.first().content - 1 : 0;
-		
 		guild.queue.push({ id: res.items[index].id.videoId, title: res.items[index].snippet.title, req: message.author.id, src: "youtube" });
 		if (message.channel.permissionsFor(client.bot.user).has('MANAGE_MESSAGES')) collector.first().delete();
 
