@@ -11,10 +11,10 @@ exports.run = async (client, message, args) => {
     if(!args[0]){
         message.channel.send({embed:{
         title: `current volume`,
+        color: config.options.embedColour,
         description: `the current volume is ${client.volume[message.guild.id]*100}% `
         }})
-        return
-    
+        return    
     }    
 
     if(parseInt(args[0])){

@@ -151,15 +151,19 @@ exports.run = async function (client, message, args) {
 		const collector = await message.channel.awaitMessages(m => m.author.id === message.author.id && message.guild && ((parseInt(m.content) && m.content >= 1 && m.content <= res.items.length) || m.content.toLowerCase().startsWith(client.queues[message.guild.id] + "p") || m.content === "c"), {
 			maxMatches: 1,
 			time: 10000
-		});
-
-		if (!collector.first() || collector.first().content.toLowerCase().startsWith(client.prefixes[message.guild.id] + "p") || collector.first().content === "c") {
-			if ((!collector.first() || collector.first().content === "c") && client.bot.voiceConnections.get(message.guild.id).channel.id && guild.queue.length === 0) client.bot.voiceConnections.get(message.guild.id).disconnect();
+		}).catch(e =>{
 			return src.edit({ embed: {
 				color: client.config.options.embedColour,
 				title: `Too slow`,
 				description: `You took more than 10 seconds to select`,
 			}});
+		})
+
+		if (collector == undefined) return;
+
+		if (!collector.first() || collector.first().content.toLowerCase().startsWith(client.prefixes[message.guild.id] + "p") || collector.first().content === "c") {
+			if ((!collector.first() || collector.first().content === "c") && client.bot.voiceConnections.get(message.guild.id).channel.id && guild.queue.length === 0) client.bot.voiceConnections.get(message.guild.id).disconnect();
+			return src.delete();
 		};
 
 		if (message.channel.permissionsFor(client.bot.user).has('MANAGE_MESSAGES')) collector.first().delete();

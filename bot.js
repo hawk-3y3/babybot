@@ -41,6 +41,7 @@ client = {
     }),
     config: require('./config.json'),
     queues: {},
+    blacklist: require("./data/blacklist.json"),
     prefixes: require("./data/prefixes.json"),
     volume: require("./data/volume.json")
     }
@@ -87,7 +88,8 @@ client.bot.on("guildCreate", g => {
 	g.defaultChannel.send(`Waddup! This is **${client.bot.user.username}**, thank you for inviting me. You can view my commands with '${client.config.options.prefix}help'. Please report any issues on the github page (${client.config.options.prefix}github)`);
 
 	client.prefixes[g.id] = client.config.options.prefix;
-	client.queues[g.id] = { id: g.id, messageChannel: "", queue: [], svotes: [], repeat: "None" };
+    client.queues[g.id] = { id: g.id, messageChannel: "", queue: [], svotes: [], repeat: "None" };
+    client.blacklist[g.id] = { id: g.id };
 });
 
 client.bot.on("guildDelete", g => {
