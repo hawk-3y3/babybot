@@ -25,6 +25,7 @@ client.prefixes[message.guild.id] = args[0];
 
     message.channel.send({embed:{
         title: `Prefix changed`,
+        color: client.config.options.embedColour,
         description: `The new prefix for this server will be "${args[0]}" `
         }
     })
