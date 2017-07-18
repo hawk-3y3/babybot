@@ -1,4 +1,4 @@
-exports.run = (client, message, args) => {
+exports.run = (message, args) => {
         // Firstly we will need to send a response to the original command
         message.channel.send('pong')
             .then((secondMessage) => {

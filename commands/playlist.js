@@ -2,9 +2,9 @@ const ytutil           = require("../utilities/ytutil.js");
 const sthandle         = require("../utilities/streamutil.js");
 const scutil = []
 
-const ytrx = new RegExp("(?:youtube\\.com.*(?:\\?|&)(?:v|list)=|youtube\\.com.*embed\\/|youtube\\.com.*v\\/|youtu\\.be\\/)((?!videoseries)[a-zA-Z0-9_-]*)");
+const ytrx = /(?:youtube\.com.*(?:\\?|&)(?:v|list)=|youtube\.com.*embed\/|youtube\.com.*v\/|youtu\.be\/)((?!videoseries)[a-zA-Z0-9_-]*)/i
 
-exports.run = async function (client, message, args) {
+exports.run = async function (message, args, options) {
 	
 	if(permissions.isBlocked(message.member)) return message.channel.send({ embed: {
 		color: client.config.options.embedColour,
@@ -111,8 +111,8 @@ exports.run = async function (client, message, args) {
 
             res.src = "youtube";
 			res.type = "playlist";
-			res.items = await ytutil.getPlaylist(ytrxm[1], (/^--shuffle$|^-sh$/i).test(args[0]) ? Infinity : "15");
-			if ((/^--shuffle$|^-sh$/i).test(args[0])) res.items = ytutil.shuffle(res.items);
+			res.items = await ytutil.getPlaylist(ytrxm[1], (/^--shuffle$|^--sh$/i).test(options) ? Infinity : clientInformation.config.options.maxPlaylist);
+			if ((/^--shuffle$|^--sh$/i).test(options)) res.items = ytutil.shuffle(res.items);
 
 		}
 	};
@@ -151,21 +151,25 @@ exports.run = async function (client, message, args) {
 		const collector = await message.channel.awaitMessages(m => m.author.id === message.author.id && message.guild && ((parseInt(m.content) && m.content >= 1 && m.content <= res.items.length) || m.content.toLowerCase().startsWith(client.queues[message.guild.id] + "p") || m.content === "c"), {
 			maxMatches: 1,
 			time: 10000
-		});
-
-		if (!collector.first() || collector.first().content.toLowerCase().startsWith(client.prefixes[message.guild.id] + "p") || collector.first().content === "c") {
-			if ((!collector.first() || collector.first().content === "c") && client.bot.voiceConnections.get(message.guild.id).channel.id && guild.queue.length === 0) client.bot.voiceConnections.get(message.guild.id).disconnect();
+		}).catch(e =>{
 			return src.edit({ embed: {
 				color: client.config.options.embedColour,
 				title: `Too slow`,
 				description: `You took more than 10 seconds to select`,
 			}});
+		})
+
+		if (collector == undefined) return;
+
+		if (!collector.first() || collector.first().content.toLowerCase().startsWith(client.prefixes[message.guild.id] + "p") || collector.first().content === "c") {
+			if ((!collector.first() || collector.first().content === "c") && client.bot.voiceConnections.get(message.guild.id).channel.id && guild.queue.length === 0) client.bot.voiceConnections.get(message.guild.id).disconnect();
+			return src.delete();
 		};
 
 		if (message.channel.permissionsFor(client.bot.user).has('MANAGE_MESSAGES')) collector.first().delete();
 
-        res.songs = await ytutil.getPlaylist(res.items[collector.first().content - 1].id.playlistId, (/^--shuffle$|^-sh$/i).test(args[0]) ? Infinity : "15"); 
-		if ((/^--shuffle$|^-sh$/i).test(args[0])) res.songs = ytutil.shuffle(res.songs);
+        res.songs = await ytutil.getPlaylist(res.items[collector.first().content - 1].id.playlistId, (/^--shuffle$|^--sh$/i).test(options) ? Infinity : "15"); 
+		if ((/^--shuffle$|^--sh$/i).test(options)) res.songs = ytutil.shuffle(res.songs);
 		res.songs.map(v => guild.queue.push({ id: v.id, title: v.title, req: message.author.id, src: res.src }));
 
 		src.edit({embed: {
@@ -185,8 +189,8 @@ exports.run = async function (client, message, args) {
 
 exports.usage = {
 	main: "{prefix}{command}",
-	args: "[--shuffle | -sh] <YouTube Playlist Search/Playlist URL>",
-	description: "Queue a YT Playlist. Use `--shuffle` or `-sh` to shuffle before queuing",
+	args: "<YouTube Playlist Search/Playlist URL> [--shuffle | --sh] ",
+	description: "Queue a YT Playlist. Use `--shuffle` or `--sh` to shuffle before queuing",
 	adminOnly: false,
 	DJ: false
 };

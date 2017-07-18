@@ -1,6 +1,6 @@
 const fs = require("fs");
 
-exports.run = async (client, message, args) => {
+exports.run = async (message, args) => {
     if (!args[0]) {    
         let commands = await fs.readdirSync(__dirname);
         let prefix = client.prefixes[message.guild.id]

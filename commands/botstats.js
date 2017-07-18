@@ -1,4 +1,4 @@
-exports.run = (client, message, args) => {
+exports.run = (message, args) => {
 const discord = require('discord.js');
 const packageFile = require('../package.json');
 const pusage = require('pidusage');

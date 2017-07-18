@@ -1,7 +1,7 @@
 'use strict';
 
 // Module to handle the %github command, gives link to the project's github repository
-exports.run = (client, message, args) => {
+exports.run = (message, args) => {
     const pkg = require('../package.json')
         // Respond with github link
         message.channel.send(client.bot.user.username + '\'s code is 100% open-source, github repository: ' + pkg.homepage

@@ -1,4 +1,4 @@
-        exports.run = (client, message, args) => {
+        exports.run = (message, args) => {
             if(!message.channel.nsfw) {
                 message.channel.send("that's not allowed arround here!")
                 return

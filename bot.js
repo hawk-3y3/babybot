@@ -2,10 +2,11 @@ const discord = require('discord.js');
 const responseObject = require("./responses.json");
 const fs = require('fs');
 const sf = require("snekfetch");
-permissions = require("./utilities/permutil.js")
+permissions = require("./utilities/permutil.js");
 
 
-let client = null;
+
+client = null;
 /* Global variables for connection control (discord.js has its own client reconnection handling but
 it can sometimes fail, particularly when using the optional UWS peer dependency) */
 // If the client is currently logging in
@@ -41,6 +42,7 @@ client = {
     }),
     config: require('./config.json'),
     queues: {},
+    blacklist: require("./data/blacklist.json"),
     prefixes: require("./data/prefixes.json"),
     volume: require("./data/volume.json")
     }
@@ -69,6 +71,7 @@ client.bot.on('ready', () => {
 		if (!client.prefixes[g.id]) client.prefixes[g.id] = client.config.options.prefix;
 		if (!client.queues[g.id]) client.queues[g.id] = { id: g.id, messagec: "", dj: "", queue: [], svotes: [], repeat: "None" };
         if (!client.volume[g.id]) client.volume[g.id] = { id: g.id, volume:"0.05"}
+        if (!client.blacklist[g.id]) client.blacklist[g.id] = {id: g.id, list: []}
     });
 });
 
@@ -87,7 +90,8 @@ client.bot.on("guildCreate", g => {
 	g.defaultChannel.send(`Waddup! This is **${client.bot.user.username}**, thank you for inviting me. You can view my commands with '${client.config.options.prefix}help'. Please report any issues on the github page (${client.config.options.prefix}github)`);
 
 	client.prefixes[g.id] = client.config.options.prefix;
-	client.queues[g.id] = { id: g.id, messageChannel: "", queue: [], svotes: [], repeat: "None" };
+    client.queues[g.id] = { id: g.id, messageChannel: "", queue: [], svotes: [], repeat: "None" };
+    client.blacklist[g.id] = { id: g.id };
 });
 
 client.bot.on("guildDelete", g => {
@@ -105,14 +109,18 @@ client.bot.on('message', message => {
 
     let command;
     let args;
+    let options
 
     if (message.content.startsWith(client.prefixes[message.guild.id])){
+        options = readOptions(message)
 	    command = message.content.split(' ')[0];
-	    command = command.slice(client.prefixes[message.guild.id].length);
-	    args = message.content.split(' ').slice(1);
+        command = command.slice(client.prefixes[message.guild.id].length);
+        args = message.content.replace(/(--\S+)/g,"")
+	    args = args.split(' ').slice(1);
     } else if (message.content.startsWith(`<@${client.bot.user.id}>`)){
         command = message.content.split(' ')[1];
-	    args = message.content.split(' ').slice(2);
+	    args = message.content.replace(/(--\S+)/g,"")
+	    args = args.split(' ').slice(2);
         if(command === undefined) {
             message.channel.send(`for help with the commands try ${client.config.options.prefix}help.`)
             return
@@ -127,7 +135,7 @@ client.bot.on('message', message => {
 	try {
 		let commandFile = require(`./commands/${command}.js`)
 		message.react("\u2611");
-		commandFile.run(client, message, args);
+		commandFile.run(message, args, options);
         delete require.cache[require.resolve(`./commands/${command}.js`)]
 		} catch (err) {
         message.channel.send(`${command} is not a valid command!`)
@@ -210,4 +218,11 @@ function setStartClock() {
         console.log('debug: start clock started');
         startClock = setInterval(restart, 3000);
     }
+}
+
+function readOptions(message){
+    let orx = /(--\S+)/g;
+    message = message.content.slice(client.prefixes[message.guild.id].length);
+    let options = message.match(orx)
+    return options    
 }

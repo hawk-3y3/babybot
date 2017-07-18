@@ -1,9 +1,9 @@
 const ytutil           = require("../utilities/ytutil.js");
 const sthandle         = require("../utilities/streamutil.js");
 
-const ytrx = new RegExp("(?:youtube\\.com.*(?:\\?|&)(?:v|list)=|youtube\\.com.*embed\\/|youtube\\.com.*v\\/|youtu\\.be\\/)((?!videoseries)[a-zA-Z0-9_-]*)");
+const ytrx = /(?:youtube\.com.*(?:\\?|&)(?:v|list)=|youtube\.com.*embed\/|youtube\.com.*v\/|youtu\.be\/)((?!videoseries)[a-zA-Z0-9_-]*)/i;
 
-exports.run = async function (client, message, args) {
+exports.run = async function (message, args, options) {
 
 	if(permissions.isBlocked(message.member)) return message.channel.send({ embed: {
 		color: client.config.options.embedColour,
@@ -119,8 +119,8 @@ exports.run = async function (client, message, args) {
 
 			if (ytrxm[1].length >= 15) {
 				res.type = "playlist";
-				res.items = await ytutil.getPlaylist(ytrxm[1], (/^--shuffle$|^-sh$/i).test(args[0]) ? Infinity : "15");
-				if ((/^--shuffle$|^-sh$/i).test(args[0])) res.items = ytutil.shuffle(res.items);
+				res.items = await ytutil.getPlaylist(ytrxm[1], (/^--shuffle$|^--sh$/i).test(options) ? Infinity : "15");
+				if ((/^--shuffle$|^--sh$/i).test(options)) res.items = ytutil.shuffle(res.items);
 			} else {
 				res.type = "url";
 				res.items = await ytutil.videoInfo(ytrxm[1]);
@@ -160,19 +160,25 @@ exports.run = async function (client, message, args) {
 
 		const collector = await message.channel.awaitMessages(m => m.author.id === message.author.id && message.guild && ((parseInt(m.content) && m.content >= 1 && m.content <= res.items.length) || m.content.toLowerCase().startsWith(client.prefixes[message.guild.id] + "p") || m.content === "c"), {
 			maxMatches: 1,
-			time: 10000
-		})
-
-		if (!collector.first() || collector.first().content.toLowerCase().startsWith(client.prefixes[message.guild.id] + "p") || collector.first().content === "c") {
-			if ((!collector.first() || collector.first().content === "c") && client.bot.voiceConnections.get(message.guild.id).channel.id && guild.queue.length === 0) client.voiceConnections.get(message.guild.id).disconnect();
+			time: 10000,
+			error: ["time"]
+		}).catch(e =>{
 			return src.edit({ embed: {
 				color: client.config.options.embedColour,
 				title: `Too slow`,
 				description: `You took more than 10 seconds to select`,
 			}});
+		})
+
+		if (collector == undefined) return;
+
+		if (!collector.first() || collector.first().content.toLowerCase().startsWith(client.prefixes[message.guild.id] + "p") || collector.first().content === "c") {
+			if ((!collector.first() || collector.first().content === "c") && client.bot.voiceConnections.get(message.guild.id).channel.id && guild.queue.length === 0) client.bot.voiceConnections.get(message.guild.id).disconnect();
+			return src.delete();
 		};
 
 		if (message.channel.permissionsFor(client.bot.user).has('MANAGE_MESSAGES')) collector.first().delete();
+		
 		
 		guild.queue.push({ id: res.items[collector.first().content - 1].id.videoId, title: res.items[collector.first().content - 1].snippet.title, req: message.author.id, src: "youtube" });
 

@@ -17,10 +17,15 @@ module.exports = {
 	},
 
 	isBlocked(member) {
-		let hdb = require(`../config.json`).users.blocked;
+		let blockList = require(`../config.json`).users.blocked;
 		delete require.cache[require.resolve(`../config.json`)];
 
-		return ((module.exports.hasRole(member, "NoMusicPerms") || hdb.includes(member.id)) && !owners.includes(member.id) && member.guild.ownerID !== member.id);
+		return ((module.exports.hasRole(member, "NoMusicPerms") || blockList.includes(member.id)) && !owners.includes(member.id) && member.guild.ownerID !== member.id);
+	},
+
+	IsBlacklisted(member) {
+		let blacklist = require('../data/blacklist.json')[member.guild.id];
+		
 	}
 
 }

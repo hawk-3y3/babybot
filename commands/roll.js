@@ -1,4 +1,4 @@
-exports.run = function (client, message, args) {
+exports.run = function (message, args) {
 
     let rx = /((?:\d*)d(?:\d+))/gi;
     let rx2 = /^(?:(\d*)d(\d+))/i

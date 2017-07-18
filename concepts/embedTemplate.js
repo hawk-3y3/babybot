@@ -1,4 +1,4 @@
-exports.run = (client, message, args) => {
+exports.run = (message, args) => {
 let embed = {
   "url": "https://discordapp.com",
   "color": 0,

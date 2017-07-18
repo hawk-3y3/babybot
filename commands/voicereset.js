@@ -1,4 +1,4 @@
-exports.run = async function (client, message, args) {
+exports.run = async function (message, args) {
 
 	if (!(permissions.isDJ(message.member, client) || permissions.isAdmin(message.member))) return message.channel.send({ embed: {
 		color: client.config.options.embedColour,
