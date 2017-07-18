@@ -1,5 +1,5 @@
 
-exports.run = function(client, message, args) {
+exports.run = function(message, args) {
 
 	if(permissions.isBlocked(message.member)) return message.channel.send({ embed: {
 		color: client.config.options.embedColour,

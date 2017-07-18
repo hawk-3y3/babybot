@@ -1,7 +1,7 @@
 const fsutil = require('../utilities/fsutil.js')
 
 
-exports.run = async (client, message, args) => {
+exports.run = async (message, args) => {
     if ( !(permissions.isDJ(message.member, client) || permissions.isAdmin(message.member)) ) return message.channel.send({ embed: {
 		color: config.options.embedColour,
 		title: "Access Denied",

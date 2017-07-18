@@ -1,4 +1,4 @@
-exports.run = (client, message, args) => {
+exports.run = (message, args) => {
     let result = "The results are: ";
     let n = (isNaN(args[0])) ? 1 : args[0];
     let i = 0;

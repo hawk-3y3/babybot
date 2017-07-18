@@ -1,4 +1,4 @@
-exports.run = (client, message, args) => {
+exports.run = (message, args) => {
 const request = require('request')
 const config = require('../config.json') 
 

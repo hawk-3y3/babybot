@@ -1,6 +1,6 @@
 fsutil = require('../utilities/fsutil.js')
 
-exports.run = async (client, message, args) => {
+exports.run = async (message, args) => {
 
 if(permissions.isBlocked(message.member)) return message.channel.send({ embed: {
     color: client.config.options.embedColour,

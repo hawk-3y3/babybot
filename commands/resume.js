@@ -1,17 +1,17 @@
-exports.run = function (client, msg, args) {
+exports.run = function (message, args) {
 
-	if(permissions.isBlocked(msg.member)) return msg.channel.send({ embed: {
+	if(permissions.isBlocked(message.member)) return message.channel.send({ embed: {
 		color: config.options.embedColour,
 		title: "Denied",
 		description: `Your permissions to use ${client.bot.user.username} on this server are revoked.`
 	}});
 
-	if (!client.voiceConnections.get(msg.guild.id) || client.queues[msg.guild.id].queue.length === 0) return msg.channel.send({ embed: {
+	if (!client.voiceConnections.get(message.guild.id) || client.queues[message.guild.id].queue.length === 0) return message.channel.send({ embed: {
 		color: config.options.embedColour,
 		title: "There's no music playing"
 	}});
 
-	client.voiceConnections.get(msg.guild.id).dispatcher.resume();
+	client.voiceConnections.get(message.guild.id).dispatcher.resume();
 
 }
 

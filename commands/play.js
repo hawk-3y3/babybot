@@ -1,9 +1,9 @@
 const ytutil           = require("../utilities/ytutil.js");
 const sthandle         = require("../utilities/streamutil.js");
 
-const ytrx = new RegExp("(?:youtube\\.com.*(?:\\?|&)(?:v|list)=|youtube\\.com.*embed\\/|youtube\\.com.*v\\/|youtu\\.be\\/)((?!videoseries)[a-zA-Z0-9_-]*)");
+const ytrx = /(?:youtube\.com.*(?:\\?|&)(?:v|list)=|youtube\.com.*embed\/|youtube\.com.*v\/|youtu\.be\/)((?!videoseries)[a-zA-Z0-9_-]*)/i;
 
-exports.run = async function (client, message, args) {
+exports.run = async function (message, args, options) {
 
 	if(permissions.isBlocked(message.member)) return message.channel.send({ embed: {
 		color: client.config.options.embedColour,
@@ -119,8 +119,8 @@ exports.run = async function (client, message, args) {
 
 			if (ytrxm[1].length >= 15) {
 				res.type = "playlist";
-				res.items = await ytutil.getPlaylist(ytrxm[1], (/^--shuffle$|^-sh$/i).test(args[0]) ? Infinity : "15");
-				if ((/^--shuffle$|^-sh$/i).test(args[0])) res.items = ytutil.shuffle(res.items);
+				res.items = await ytutil.getPlaylist(ytrxm[1], (/^--shuffle$|^--sh$/i).test(options) ? Infinity : "15");
+				if ((/^--shuffle$|^--sh$/i).test(options)) res.items = ytutil.shuffle(res.items);
 			} else {
 				res.type = "url";
 				res.items = await ytutil.videoInfo(ytrxm[1]);

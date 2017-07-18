@@ -1,7 +1,7 @@
 const timeParser = require("../utilities/timeparser.js");
 
 
-exports.run = function (client, message, args) {
+exports.run = function (message, args) {
     if (client.queues[message.guild.id].queue.length <= 1)
 		return message.channel.send({ embed: {
 			color: client.config.options.embedColour,
