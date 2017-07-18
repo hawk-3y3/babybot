@@ -5,7 +5,7 @@ const sf = require("snekfetch");
 permissions = require("./utilities/permutil.js")
 
 
-let client = null;
+client = null;
 /* Global variables for connection control (discord.js has its own client reconnection handling but
 it can sometimes fail, particularly when using the optional UWS peer dependency) */
 // If the client is currently logging in
@@ -107,12 +107,15 @@ client.bot.on('message', message => {
 
     let command;
     let args;
+    let options
 
     if (message.content.startsWith(client.prefixes[message.guild.id])){
+        options = readOptions(message)
 	    command = message.content.split(' ')[0];
 	    command = command.slice(client.prefixes[message.guild.id].length);
 	    args = message.content.split(' ').slice(1);
     } else if (message.content.startsWith(`<@${client.bot.user.id}>`)){
+        options = readOptions(message)
         command = message.content.split(' ')[1];
 	    args = message.content.split(' ').slice(2);
         if(command === undefined) {
@@ -212,4 +215,11 @@ function setStartClock() {
         console.log('debug: start clock started');
         startClock = setInterval(restart, 3000);
     }
+}
+
+function readOptions(message){
+    let orx = /(--\w+)/g;
+    message = message.content.slice(client.prefixes[message.guild.id].length);
+    let options = message.match(orx)
+    return options    
 }
