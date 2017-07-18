@@ -221,8 +221,7 @@ function setStartClock() {
 }
 
 function readOptions(message){
-    let orx = /(--\S+)/g;
     message = message.content.slice(client.prefixes[message.guild.id].length);
-    let options = message.match(orx)
+    let options = message.match(/(--\S+)/g)
     return options    
 }
