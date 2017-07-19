@@ -90,7 +90,6 @@ exports.run = async function (message, args, options) {
 	options = options ? options.join(): ""
 	index = options.match(/--([1-9])/)? options.match(/--([1-9])/)[1]: null; 
 
-
 	if (!ytrxm || !ytrxm[1]) {
 
 		if (!client.config.keys.ytapikey) {
@@ -187,7 +186,6 @@ exports.run = async function (message, args, options) {
 			}
 			index = collector.first() ? collector.first().content - 1 : 0;
 		}
-
 		guild.queue.push({ id: res.items[index].id.videoId, title: res.items[index].snippet.title, req: message.author.id, src: "youtube" });
 		if (message.channel.permissionsFor(client.bot.user).has('MANAGE_MESSAGES')) collector.first().delete();
 
@@ -201,7 +199,14 @@ exports.run = async function (message, args, options) {
 		}});
 	};
 	
-	sthandle.play(guild, client);
+	if(options.includes('--auto')){
+		guild.auto = true	
+		await ytutil.getRelated(res.items[index].id.videoId, guild)	
+	} else {
+		guild.auto = false
+	}
+
+	sthandle.play(guild);
 }
 
 exports.usage = {

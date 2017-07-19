@@ -2,7 +2,7 @@ const ytutil = require("./ytutil.js");
 const ytdl   = require("ytdl-core");
 const buffer = require("buffered2").BufferedStream;
 
-exports.play = async function play(guild, client) {
+exports.play = async function play(guild) {
 
 	if (!client.bot.guilds.has(guild.id) ||	!client.bot.voiceConnections.has(guild.id) || !client.bot.voiceConnections.get(guild.id).channel.id || client.bot.voiceConnections.get(guild.id).dispatcher) return;
 
@@ -55,8 +55,14 @@ exports.play = async function play(guild, client) {
 	client.bot.voiceConnections.get(guild.id).dispatcher.on("end", () => {
 		if (guild.repeat === "All") guild.queue.push(guild.queue[0]);
 		if (guild.repeat !== "Current") guild.queue.shift();
+		if (guild.auto === true) {			
+				ytutil.getRelated(guild.queue[0].id, guild)
+				//guild.queue.push({ id: related.id.videoId, title: related.snippet.title, req: client.bot.user.id, src: "youtube" });
+				
+		}
+
 		guild.svotes = [];
-		exports.play(guild, client);
+		exports.play(guild);
 	});
 
 	client.bot.voiceConnections.get(guild.id).on("disconnect", () => {

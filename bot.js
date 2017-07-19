@@ -69,7 +69,7 @@ client.bot.on('ready', () => {
     clearRestartClock(true);
     client.bot.guilds.forEach(g => {
 		if (!client.prefixes[g.id]) client.prefixes[g.id] = client.config.options.prefix;
-		if (!client.queues[g.id]) client.queues[g.id] = { id: g.id, messagec: "", dj: "", queue: [], svotes: [], repeat: "None" };
+		if (!client.queues[g.id]) client.queues[g.id] = { id: g.id, messageChannel: "", dj: "", queue: [], svotes: [], repeat: "None" };
         if (!client.volume[g.id]) client.volume[g.id] = { id: g.id, volume:"0.05"}
         if (!client.blacklist[g.id]) client.blacklist[g.id] = {id: g.id, list: []}
     });
@@ -221,7 +221,6 @@ function setStartClock() {
 }
 
 function readOptions(message){
-    message = message.content.slice(client.prefixes[message.guild.id].length);
-    let options = message.match(/(--\S+)/g)
-    return options    
+    message = message.content.slice(client.prefixes[message.guild.id].length);    
+    return message.match(/(--\S+)/g)    
 }
