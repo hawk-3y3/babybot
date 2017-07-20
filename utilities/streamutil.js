@@ -58,7 +58,6 @@ exports.play = async function play(guild) {
 		if (guild.repeat !== "Current") guild.queue.shift();
 		if (guild.auto === true) {			
 				ytutil.getRelated(guild.queue[0].id, guild)
-				//guild.queue.push({ id: related.id.videoId, title: related.snippet.title, req: client.bot.user.id, src: "youtube" });
 				
 		}
 
