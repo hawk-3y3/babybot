@@ -14,7 +14,7 @@ exports.run = function(message, args) {
 
 	if (!parseInt(args[0]) || args[0] <= 0|| args[0] >= client.queues[message.guild.id].queue.length) return message.channel.send({ embed: {
 		color: client.config.options.embedColour,
-		title: `You need to specify a number higher than 0, and less than ${client.queues[message.guild.id].queue.length}`
+		title: `You need to specify a number between 1 and ${client.queues[message.guild.id].queue.length - 1}`
 	}});
 
 	if (client.queues[message.guild.id].queue[Math.round(args[0])].req !== message.author.id && !permissions.isAdmin(message.member))

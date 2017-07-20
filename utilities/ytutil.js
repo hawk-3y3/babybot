@@ -47,6 +47,23 @@ module.exports = {
 		return videos;
 	},
 
+	async getRelated(id, guild) {
+
+		let related = await sf.get("https://www.googleapis.com/youtube/v3/search").query({
+			part       : "snippet",
+			maxResults : "5",
+			relatedToVideoId: id,
+			type	   : "video",
+			key        : ytk
+		}).catch(err => {
+			return [];
+		})
+		let index = Math.floor((Math.random() * related.body.items.length))
+		
+		related = related.body.items[index]
+		guild.queue.push({ id: related.id.videoId, title: related.snippet.title, req: client.bot.user.id, src: "youtube" });
+	},
+
 	async videoInfo(id) {
 
 		let result = await sf.get("https://www.googleapis.com/youtube/v3/videos").query({

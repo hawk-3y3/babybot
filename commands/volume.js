@@ -18,7 +18,15 @@ exports.run = async (message, args) => {
     }    
 
     if(parseInt(args[0])){
-        client.volume[message.guild.id] = parseInt(args[0])/100;
+        if(parseInt(args[0]) >= 100 || parseInt(args[0]) <= 0){
+            message.channel.send({embed:{
+                title: `out of range`,
+                color: client.config.options.embedColour,
+                description: `pick a value between 0 and 100% `
+            }})
+            return
+        }        
+        client.volume[message.guild.id] = parseInt(args[0])/100;        
         await fsutil.fsWriteFile(__dirname + '/../data/volume.json', JSON.stringify(client.volume, null, 4))
         if (client.bot.voiceConnections.get(message.guild.id) || !client.queues[message.guild.id].queue.length === 0){
             client.bot.voiceConnections.get(message.guild.id).dispatcher.setVolume(args[0]/100);

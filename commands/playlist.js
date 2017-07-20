@@ -15,7 +15,7 @@ exports.run = async function (message, args, options) {
 	if (!args[0]) return message.channel.send({ embed: {
 		color: client.config.options.embedColour,
 		title: "You need to specify what to play",
-		description: "YouTube: Search Term, URL or Playlist URL\nSoundCloud: URL"
+		description: "YouTube: Search Term, URL or Playlist URL"
 	}});
 
 	if (!client.bot.voiceConnections.get(message.guild.id)) {
@@ -127,7 +127,7 @@ exports.run = async function (message, args, options) {
 
 	if (res.type !== "search") {
 
-		res.items.map(v => guild.queue.push({ id: v.id, title: v.title, req: message.author.id, src: res.src, durl: (res.src === "soundcloud" ? scrxm[1] : undefined) }));
+		res.items.map(v => guild.queue.push({ id: v.id, title: v.title, req: message.author.id, src: res.src, durl: undefined }));
 		let embed = {
 			color: client.config.options.embedColour,
 			title: `Enqueued`,

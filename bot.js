@@ -69,7 +69,7 @@ client.bot.on('ready', () => {
     clearRestartClock(true);
     client.bot.guilds.forEach(g => {
 		if (!client.prefixes[g.id]) client.prefixes[g.id] = client.config.options.prefix;
-		if (!client.queues[g.id]) client.queues[g.id] = { id: g.id, messagec: "", dj: "", queue: [], svotes: [], repeat: "None" };
+		if (!client.queues[g.id]) client.queues[g.id] = { id: g.id, messageChannel: "", dj: "", queue: [], svotes: [], repeat: false, auto: false};
         if (!client.volume[g.id]) client.volume[g.id] = { id: g.id, volume:"0.05"}
         if (!client.blacklist[g.id]) client.blacklist[g.id] = {id: g.id, list: []}
     });
@@ -85,6 +85,16 @@ console.log('reconnect attempt event');
 client.bot.on('warn', (warning) => {
     console.log('warning:'+ warning);
 });
+
+client.bot.on("voiceStateUpdate",() => {
+    client.bot.voiceConnections.forEach((element) =>{
+        if (element.channel.members.size <= 1){
+            if(client.queues[element.channel.guild.id].auto) {
+                client.queues[element.channel.guild.id].auto = false
+            }
+        }
+    })
+})
 
 client.bot.on("guildCreate", g => {
 	g.defaultChannel.send(`Waddup! This is **${client.bot.user.username}**, thank you for inviting me. You can view my commands with '${client.config.options.prefix}help'. Please report any issues on the github page (${client.config.options.prefix}github)`);
@@ -221,8 +231,6 @@ function setStartClock() {
 }
 
 function readOptions(message){
-    let orx = /(--\S+)/g;
-    message = message.content.slice(client.prefixes[message.guild.id].length);
-    let options = message.match(orx)
-    return options    
+    message = message.content.slice(client.prefixes[message.guild.id].length);    
+    return message.match(/(--\S+)/g)    
 }
