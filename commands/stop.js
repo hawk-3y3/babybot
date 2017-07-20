@@ -11,7 +11,8 @@ exports.run = function (message, args) {
 		title: "There's no music playing"
 	}});
 
-	client.queues[message.guild.id].repeat = "None";
+	client.queues[message.guild.id].repeat = false;
+	client.queues[message.guild.id].auto = false
 	client.queues[message.guild.id].queue.splice(1, client.queues[message.channel.guild.id].queue.length);
 	client.bot.voiceConnections.get(message.guild.id).dispatcher.end();
 

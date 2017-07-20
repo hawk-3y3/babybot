@@ -39,7 +39,7 @@ exports.play = async function play(guild) {
 
 	client.bot.channels.get(guild.messageChannel).send({embed: {
 		color: client.config.options.embedColour,
-		title: "Now Playing",
+		title: `Now Playing${guild.auto ? ", Autoplay ON": ""}${!guild.repeat? "" : `, Repeating ${guild.repeat}`}`,
 		description: `[${guild.queue[0].title}](https://youtu.be/${guild.queue[0].id})`,
 		footer: {
 			text: `Requested by ${client.bot.users.get(guild.queue[0].req) ? `${client.bot.users.get(guild.queue[0].req).username}#${client.bot.users.get(guild.queue[0].req).discriminator}` : "Unknown"}`

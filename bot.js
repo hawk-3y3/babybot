@@ -69,7 +69,7 @@ client.bot.on('ready', () => {
     clearRestartClock(true);
     client.bot.guilds.forEach(g => {
 		if (!client.prefixes[g.id]) client.prefixes[g.id] = client.config.options.prefix;
-		if (!client.queues[g.id]) client.queues[g.id] = { id: g.id, messageChannel: "", dj: "", queue: [], svotes: [], repeat: "None", auto: false};
+		if (!client.queues[g.id]) client.queues[g.id] = { id: g.id, messageChannel: "", dj: "", queue: [], svotes: [], repeat: false, auto: false};
         if (!client.volume[g.id]) client.volume[g.id] = { id: g.id, volume:"0.05"}
         if (!client.blacklist[g.id]) client.blacklist[g.id] = {id: g.id, list: []}
     });
@@ -89,8 +89,9 @@ client.bot.on('warn', (warning) => {
 client.bot.on("voiceStateUpdate",() => {
     client.bot.voiceConnections.forEach((element) =>{
         if (element.channel.members.size <= 1){
-            client.bot.voiceConnections.get(element.channel.guild.id).disconnect();
-            client.queues[element.channel.guild.id] = {id: element.channel.guild.id, messageChannel: "", dj: "", queue: [], svotes: [], repeat: "None", auto: false }
+            if(client.queues[element.channel.guild.id].auto) {
+                client.queues[element.channel.guild.id].auto = false
+            }
         }
     })
 })
