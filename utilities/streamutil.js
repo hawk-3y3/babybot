@@ -7,7 +7,8 @@ exports.play = async function play(guild) {
 	if (!client.bot.guilds.has(guild.id) ||	!client.bot.voiceConnections.has(guild.id) || !client.bot.voiceConnections.get(guild.id).channel.id || client.bot.voiceConnections.get(guild.id).dispatcher) return;
 
 	if (guild.queue.length === 0) {
-		if (client.bot.voiceConnections.get(guild.id) && client.bot.voiceConnections.get(guild.id).channel.id) client.bot.voiceConnections.get(guild.id).disconnect(); 
+		if (client.bot.voiceConnections.get(guild.id) && client.bot.voiceConnections.get(guild.id).channel.id)
+			client.bot.voiceConnections.get(guild.id).disconnect(); 
 		return client.bot.channels.get(guild.messageChannel).send({ embed: {
 			color: client.config.options.embedColour,
 			title: "Playback finished",
