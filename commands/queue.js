@@ -20,17 +20,17 @@ exports.run = function (message, args) {
 	let startQueue = ((page - 1) * 10) + 1;
 	let endQueue   = startQueue + 10 > guild.queue.length ? guild.queue.length : startQueue + 10;
 
-	let track = guild.queue[0];
-	i=20,p=(client.bot.voiceConnections.get(message.guild.id).dispatcher.time / 1000)/track.duration,f=i-i*p,x=[''];for(;i--;){x.push(i<f?'▱':'▰');}
+	let song = guild.queue[0];
+	i=20,p=(client.bot.voiceConnections.get(message.guild.id).dispatcher.time / 1000)/song.duration,f=i-i*p,x=[''];for(;i--;){x.push(i<f?'▱':'▰');}
 
 	let embed = {
 		color       : client.config.options.embedColour,
-		title       : track.title,
-		url         : track.src !== "soundcloud" ? `https://youtu.be/${track.id}` : undefined,
-		description : `${timeParser.formatSeconds(client.bot.voiceConnections.get(message.guild.id).dispatcher.time / 1000)}${track.src === "youtube" ? "/" + timeParser.formatSeconds(track.duration) : ""}\n${x.join('')}`,
+		title       : song.title,
+		url         : `https://youtu.be/${song.id}`,
+		description : `${timeParser.formatSeconds(client.bot.voiceConnections.get(message.guild.id).dispatcher.time / 1000)}${song.src === "youtube" ? "/" + timeParser.formatSeconds(song.duration) : ""}\n${x.join('')}`,
 		fields: [
 			{
-				name: "Queue",
+				name: `Queue${guild.auto ? ", Autoplay ON": ""}${!guild.repeat? "" : `, Repeating ${guild.repeat}`}`,
 				value: guild.queue.slice(startQueue, endQueue).map((item, i) => `${startQueue + i}. ${item.title} - ${client.bot.users.get(item.req) ? `**${client.bot.users.get(guild.queue[startQueue + i].req).username}#${client.bot.users.get(guild.queue[startQueue + i].req).discriminator}**` : "**Unknown**"}`).join("\n")
 			}
 		],
