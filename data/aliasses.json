@@ -10,5 +10,6 @@
 	"fs" : "forceskip",
 	"r"  : "resume",
 	"st" : "stop",
-	"vcr": "voicereset"
+	"vcr": "voicereset",
+	"vol":"volume"
 }

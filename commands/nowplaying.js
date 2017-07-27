@@ -1,4 +1,4 @@
-const timeParser = require("../utilities/timeParser.js");
+const timeParser = require("../utilities/timeparser.js");
 
 exports.run = function (message, args) {
 
@@ -12,7 +12,6 @@ exports.run = function (message, args) {
 	let track = guild.queue[0];
 
 
-	i=20,p=(client.bot.voiceConnections.get(message.guild.id).dispatcher.time / 1000)/track.duration,f=i-i*p,x=[''];for(;i--;){x.push(i<f?'▱':'▰');}
 	let embed = {
 		color       : client.config.options.embedColour,
 		title       : track.title,

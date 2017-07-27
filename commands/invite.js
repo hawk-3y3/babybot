@@ -5,7 +5,7 @@ exports.run = (message, args) => {
 
     // Respond with invite link
     message.channel.send(`To invite me onto a server use this link ${message.member.displayName}:`)
-    message.channel.send(`https://discordapp.com/api/oauth2/authorize?client_id=${client.bot.user.id}&scope=bot&permissions=8`)
+    message.channel.send(`https://discordapp.com/api/oauth2/authorize?client_id=${client.config.users.botClientId}&scope=bot&permissions=8`)
 }
 
 exports.usage = {
