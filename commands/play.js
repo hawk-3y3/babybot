@@ -88,7 +88,8 @@ exports.run = async function (message, args, options) {
 	let res = {};
 	
 	options = options ? options.join(): ""
-	let index = options.match(/--([1-9])/)? options.match(/--([1-9])/)[1]: null; 
+	let index = options.match(/--([1-9])/)? options.match(/--([1-9])/)[1]: null;
+	let collector 
 
 	if (!ytrxm || !ytrxm[1]) {
 
@@ -164,7 +165,7 @@ exports.run = async function (message, args, options) {
 		if(index == null) {
 			
 
-			let collector = await message.channel.awaitMessages(m => m.author.id === message.author.id && message.guild && ((parseInt(m.content) && m.content >= 1 && m.content <= res.items.length) || m.content.toLowerCase().startsWith(client.prefixes[message.guild.id] + "p") || m.content === "c"), {
+			collector = await message.channel.awaitMessages(m => m.author.id === message.author.id && message.guild && ((parseInt(m.content) && m.content >= 1 && m.content <= res.items.length) || m.content.toLowerCase().startsWith(client.prefixes[message.guild.id] + "p") || m.content === "c"), {
 				maxMatches: 1,
 				time: 20000,
 				error: ["time"]
