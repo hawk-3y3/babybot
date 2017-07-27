@@ -25,7 +25,7 @@ exports.run = async (message, args, options) => {
             message.channel.send({embed:{
                 title: `out of range`,
                 color: client.config.options.embedColour,
-                description: `pick a value between 0 and 200% `
+                description: `pick a value between 1 and 200% `
             }})
             return
         }        
