@@ -16,10 +16,12 @@ exports.run = async (message, args, options) => {
         description: `the current volume is ${client.volume[message.guild.id]*100}% `
         }})
         return    
-    }    
+    }
+    
+    let overload = options ? (options.includes("--overload") && permissions.isAdmin(message.member)) : false
 
     if(parseInt(args[0])){
-        if((parseInt(args[0]) > 200 || parseInt(args[0]) < 0)){
+        if((parseInt(args[0]) > 200 || parseInt(args[0]) <= 0) && overload === false){
             message.channel.send({embed:{
                 title: `out of range`,
                 color: client.config.options.embedColour,
