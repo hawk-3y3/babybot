@@ -9,7 +9,7 @@ module.exports = {
 	},
 
 	isAdmin(member) {
-		return (owners.includes(member.id) || member.guild.ownerID === member.id || member.permissions.has('ADMINISTRATOR') || module.exports.hasRole(member, "Mod"));
+		return (owners.includes(member.id) || member.guild.ownerID === member.id || member.permissions.has('ADMINISTRATOR') || module.exports.hasRole(member, "Mod"))? true : false;
 	},
 
 	isDJ(member, client) {
