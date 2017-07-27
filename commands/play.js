@@ -88,7 +88,7 @@ exports.run = async function (message, args, options) {
 	let res = {};
 	
 	options = options ? options.join(): ""
-	index = options.match(/--([1-9])/)? options.match(/--([1-9])/)[1]: null; 
+	let index = options.match(/--([1-9])/)? options.match(/--([1-9])/)[1]: null; 
 
 	if (!ytrxm || !ytrxm[1]) {
 
