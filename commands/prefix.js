@@ -2,11 +2,11 @@ fsutil = require('../utilities/fsutil.js')
 
 exports.run = async (message, args) => {
 
-if(permissions.isBlocked(message.member)) return message.channel.send({ embed: {
-    color: client.config.options.embedColour,
-	title: "Denied",
-	description: `Your permissions to use ${client.bot.user.username} on this server are revoked.`
-}});
+    if (!permissions.isAdmin(message.member)) return message.channel.send({ embed: {
+		color: client.config.options.embedColour,
+		title: "Access Denied",
+		description: "You need the Admin role to use this command."
+    }});
 
 
 if(!args[0]){
