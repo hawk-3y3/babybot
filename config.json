@@ -1,0 +1,18 @@
+{
+    "keys":{
+        "token": "",
+        "gfykey": "",
+        "ytapikey": ""
+    },
+    "options":{
+        "prefix": "/",
+        "embedColour":"4492543",
+        "maxQueue":"30",
+        "maxPlaylist":"15"
+    },
+    "users":{
+        "owners":"",
+        "botClientId":"",
+        "blocked":[]
+    }
+}
