@@ -16,7 +16,7 @@ exports.run = function (message, args) {
 		color       : client.config.options.embedColour,
 		title       : track.title,
 		url         : `https://youtu.be/${track.id}`,
-		description : `${timeParser.formatSeconds(client.bot.voiceConnections.get(message.guild.id).dispatcher.time / 1000)}${track.src === "youtube" ? "/" + timeParser.formatSeconds(track.duration) : ""}\n${x.join('')}`,
+		description : `${timeParser.formatSeconds(client.bot.voiceConnections.get(message.guild.id).dispatcher.time / 1000)}${track.src === "youtube" ? "/" + timeParser.formatSeconds(track.duration) : ""}`,
 		footer: {
 			text: `Requested by ${client.bot.users.get(track.req) ? `${client.bot.users.get(guild.queue[0].req).username}#${client.bot.users.get(guild.queue[0].req).discriminator}` : "Unknown"}`
 		}
