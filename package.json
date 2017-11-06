@@ -5,22 +5,23 @@
   "main": "main.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hawk-3y3/babybot.git"
+    "url": "git+https://github.com/totallynotabird/babybot.git"
   },
   "dependencies": {
     "buffered2": "^1.0.0",
-    "discord.js": "^11.1.0",
-    "opusscript": "0.0.3",
+    "discord.js": "^11.2.1",
+    "node-opus": "^0.2.7",
+    "opusscript": "0.0.4",
     "pidusage": "^1.1.5",
     "request": "^2.81.0",
     "snekfetch": "^3.2.3",
     "ytdl-core": "^0.14.2"
   },
-  "author": "hawk-3y3",
+  "author": "totallynotabird",
   "bugs": {
-    "url": "https://github.com/hawk-3y3/babybot/issues"
+    "url": "https://github.com/totallynotabird/babybot/issues"
   },
-  "homepage": "https://github.com/hawk-3y3/babybot#readme",
+  "homepage": "https://github.com/totallynotabird/babybot#readme",
   "devDependencies": {},
   "scripts": {
     "test": "node main.js"
