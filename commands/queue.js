@@ -27,7 +27,7 @@ exports.run = function (message, args) {
 		color       : client.config.options.embedColour,
 		title       : song.title,
 		url         : `https://youtu.be/${song.id}`,
-		description : `${timeParser.formatSeconds(client.bot.voiceConnections.get(message.guild.id).dispatcher.time / 1000)}${song.src === "youtube" ? "/" + timeParser.formatSeconds(song.duration) : ""}\n${x.join('')}`,
+		description : `${timeParser.formatSeconds(client.bot.voiceConnections.get(message.guild.id).dispatcher.time / 1000)}${song.src === "youtube" ? "/" + timeParser.formatSeconds(song.duration) : ""}\n`,
 		fields: [
 			{
 				name: `Queue${guild.auto ? ", Autoplay ON": ""}${!guild.repeat? "" : `, Repeating ${guild.repeat}`}`,
