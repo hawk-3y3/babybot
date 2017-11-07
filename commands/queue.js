@@ -1,12 +1,10 @@
 const timeParser = require("../utilities/timeparser.js");
+const nowPlaying = require("../commands/nowplaying")
 
 
 exports.run = function (message, args) {
-    if (client.queues[message.guild.id].queue.length <= 1)
-		return message.channel.send({ embed: {
-			color: client.config.options.embedColour,
-			title: "There's nothing queued"
-		}});
+    if (client.queues[message.guild.id].queue.length <= 1){return nowPlaying.run(message, args)
+		};
 
 
 	let guild = client.queues[message.guild.id];
@@ -31,7 +29,7 @@ exports.run = function (message, args) {
 		fields: [
 			{
 				name: `Queue${guild.auto ? ", Autoplay ON": ""}${!guild.repeat? "" : `, Repeating ${guild.repeat}`}`,
-				value: guild.queue.slice(startQueue, endQueue).map((item, i) => `${startQueue + i}. ${item.title} - ${client.bot.users.get(item.req) ? `${client.bot.users.get(guild.queue[startQueue + i].req).id}` : "**Unknown**"}`).join("\n")
+				value: guild.queue.slice(startQueue, endQueue).map((item, i) => `${startQueue + i}. ${item.title} - ${client.bot.users.get(item.req) ? `<@${client.bot.users.get(guild.queue[startQueue + i].req).id}>` : "**Unknown**"}`).join("\n")
 			}
 		],
 		footer: {
