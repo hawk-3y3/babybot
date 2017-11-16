@@ -121,9 +121,9 @@ exports.run = async function (message, args, options) {
 
 			res.src = "youtube";
 
-			if (ytrxm[1].length >= 15) {
+			if (ytrxm[1].length >= 25) {
 				res.type = "playlist";
-				res.items = await ytutil.getPlaylist(ytrxm[1], (/^--shuffle$|^--sh$/i).test(options) ? Infinity : "15");
+				res.items = await ytutil.getPlaylist(ytrxm[1], (/^--shuffle$|^--sh$/i).test(options) ? Infinity : "25");
 				if ((/^--shuffle$|^--sh$/i).test(options)) res.items = ytutil.shuffle(res.items);
 			} else {
 				res.type = "url";
@@ -187,7 +187,13 @@ exports.run = async function (message, args, options) {
 			}
 			index = collector.first() ? collector.first().content - 1 : 0;
 		}
-		guild.queue.push({ id: res.items[index].id.videoId, title: res.items[index].snippet.title, req: message.author.id, src: "youtube" });
+		if(options.includes('--playnext')){
+			let currentSong = guild.queue[0]
+			guild.queue[0] = { id: res.items[index].id.videoId, title: res.items[index].snippet.title, req: message.author.id, src: "youtube" };
+			guild.queue.unshift(currentSong)
+		} else {
+			guild.queue.push({ id: res.items[index].id.videoId, title: res.items[index].snippet.title, req: message.author.id, src: "youtube" });
+		}
 		if (message.channel.permissionsFor(client.bot.user).has('MANAGE_MESSAGES')) collector.first().delete();
 
 		src.edit({embed: {

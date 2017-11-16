@@ -70,7 +70,7 @@ client.bot.on('ready', () => {
     client.bot.guilds.forEach(g => {
 		if (!client.prefixes[g.id]) client.prefixes[g.id] = client.config.options.prefix;
 		if (!client.queues[g.id]) client.queues[g.id] = { id: g.id, messageChannel: "", dj: "", queue: [], svotes: [], repeat: false, auto: false};
-        if (!client.volume[g.id]) client.volume[g.id] = { id: g.id, volume:"0.05"}
+        if (!client.volume[g.id]) client.volume[g.id] = { id: g.id, volume:"0.1"}
         if (!client.blacklist[g.id]) client.blacklist[g.id] = {id: g.id, list: []}
     });
 });

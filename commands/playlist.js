@@ -168,7 +168,7 @@ exports.run = async function (message, args, options) {
 
 		if (message.channel.permissionsFor(client.bot.user).has('MANAGE_MESSAGES')) collector.first().delete();
 
-        res.songs = await ytutil.getPlaylist(res.items[collector.first().content - 1].id.playlistId, (/^--shuffle$|^--sh$/i).test(options) ? Infinity : "15"); 
+        res.songs = await ytutil.getPlaylist(res.items[collector.first().content - 1].id.playlistId, (/^--shuffle$|^--sh$/i).test(options) ? Infinity : "25"); 
 		if ((/^--shuffle$|^--sh$/i).test(options)) res.songs = ytutil.shuffle(res.songs);
 		res.songs.map(v => guild.queue.push({ id: v.id, title: v.title, req: message.author.id, src: res.src }));
 

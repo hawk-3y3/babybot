@@ -134,6 +134,6 @@ module.exports = {
 			array[i] = t;
 		}
 
-		return array.slice(0, 15);
+		return array.slice(0, 25);
 	}
 }
