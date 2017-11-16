@@ -17,7 +17,7 @@ exports.run = (message, args) => {
 		title: "There's no music playing"
     }});
     
-    if(!client.queues[message.guild.id].queue.length <= 1) return message.channel.send({ embed: {
+    if(client.queues[message.guild.id].queue.length <= 1) return message.channel.send({ embed: {
         color: client.config.options.embedColour,
         title: "there's no music queued"
     }})
