@@ -1,16 +1,15 @@
 exports.run = (message, args, options) => {
-    if(options? options.includes('--set'): false && args[0]){
-        if(client.bot.voiceConnections.get(message.guild.id)){
-            if(!permissions.isDJ(message.author, client) || permissions.isAdmin(message.author)){
-                return message.channel.send({embed:{
-                    color: client.config.options.embedColour,
-                    title: "Access Denied",
-	                description: "You need the DJ role to use this command."
-            }})}
-            let djm = args[1].match(/<@(\d+)>/i)
-            if (client.bot.voiceConnections.get(message.guild.id).channel.members.includes(djm)){
-                client.queues.dj = djm
-            }
+
+	if(permissions.isBlocked(message.member)) return message.channel.send({ embed: {
+		color: client.config.options.embedColour,
+		title: "Denied",
+		description: `Your permissions to use ${client.bot.user.username} on this server are revoked.`
+	}});
+    
+    if ((!permissions.isDJ(message.member, client) /*|| permissions.isAdmin(message.member)*/)) {
+    if(args[0]){
+        let djm = args[0].match(/<@(\d+)>/i)
+        client.queues[message.guild.id].dj = djm[1]
         }
     }
 
