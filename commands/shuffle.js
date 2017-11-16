@@ -37,12 +37,14 @@ exports.run = (message, args) => {
             [array[i], array[j]] = [array[j], array[i]];
         }
     }
-}
-return message.channel.send({embed:{
+
+    return message.channel.send({ embed: {
     color: client.config.options.embedColour,
     title: "The queue has been shuffled"
     
-}})
+    }})
+}
+
 
 exports.usage = {
 	main: "{prefix}{command}",
