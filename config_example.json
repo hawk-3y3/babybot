@@ -15,4 +15,9 @@
         "botClientId":"",
         "blocked":[]
     }
+    "roles":{
+        "DJ":"DJ",
+        "Admin":"Mod",
+        "NoMusicPerms":"NoMusicPerms"
+    }
 }
