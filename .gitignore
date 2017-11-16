@@ -89,6 +89,7 @@ $RECYCLE.BIN/
 
 config.json
 .vscode
+test.js
 concepts
 data_dump
 prefixes.json
