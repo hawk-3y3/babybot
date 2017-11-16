@@ -12,5 +12,6 @@
 	"st" 	:"stop",
 	"vcr"	:"voicereset",
 	"vol"	:"volume",
-	"pn"	:"playnext"
+	"pn"	:"playnext",
+	"sh" 	:"shuffle"
 }
