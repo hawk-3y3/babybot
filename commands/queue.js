@@ -2,7 +2,7 @@ const timeParser = require("../utilities/timeparser.js");
 const nowPlaying = require("../commands/nowplaying")
 
 
-exports.run = function (message, args) {
+exports.run = (message, args) => {
     if (client.queues[message.guild.id].queue.length <= 1){return nowPlaying.run(message, args)
 		};
 
