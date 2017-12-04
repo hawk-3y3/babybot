@@ -1,6 +1,5 @@
 const ytutil           = require("../utilities/ytutil.js");
 const sthandle         = require("../utilities/streamutil.js");
-const scutil = []
 
 const ytrx = /(?:youtube\.com.*(?:\\?|&)(?:v|list)=|youtube\.com.*embed\/|youtube\.com.*v\/|youtu\.be\/)((?!videoseries)[a-zA-Z0-9_-]*)/i
 
